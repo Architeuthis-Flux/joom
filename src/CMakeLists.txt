@@ -12,6 +12,7 @@ add_subdirectory(adpcm-xq)
 add_subdirectory(pico_st7789)
 add_subdirectory(pico_ssd1306)
 add_subdirectory(pico_ssd1306_i2c)
+add_subdirectory(pico_jumperless_v5)
 add_subdirectory(hagl_hal)
 
 foreach(SUBDIR ${BINARIES})
@@ -592,6 +593,7 @@ function(add_doom_tiny SUFFIX SCREEN)
         # TODO use defs or targets for these?
         target_link_libraries(doom_tiny${SUFFIX} PRIVATE pico_st7789 hardware_spi)
         target_link_libraries(doom_tiny${SUFFIX} PRIVATE pico_ssd1306)
+        target_link_libraries(doom_tiny${SUFFIX} PRIVATE pico_jumperless_v5)
         target_link_libraries(doom_tiny${SUFFIX} PRIVATE pico_ssd1306_i2c hardware_i2c)
         target_link_libraries(doom_tiny${SUFFIX} PRIVATE hagl_hal hardware_spi)
         target_compile_options(doom_tiny${SUFFIX} PRIVATE -fno-common -fdata-sections -Wl,--sort-section=alignment)
@@ -686,7 +688,7 @@ function(add_doom_tiny_screen SCREEN)
             # add_doom_tiny(_nost_usb_${SCREEN} ${SCREEN})
             # target_link_libraries(doom_tiny_nost_usb_${SCREEN} PRIVATE pico_cd)
             # target_compile_definitions(doom_tiny_nost_usb_${SCREEN} PRIVATE
-            #         USB_SUPPORT=1
+                    #  USB_SUPPORT=1
             #         TINY_WAD_ADDR=0x10048000
             #         )
         endif()
@@ -694,7 +696,10 @@ function(add_doom_tiny_screen SCREEN)
 endfunction()
 
 
-
+add_doom_tiny_screen("jumperless_v5")
+target_compile_definitions(doom_tiny_usb_jumperless_v5 PRIVATE
+    DOWNSAMPLING_FACTOR_OUT_OF_100=1000
+)
 
 add_doom_tiny_screen("SSD1306_70_40")
 target_compile_definitions(doom_tiny_usb_SSD1306_70_40 PRIVATE

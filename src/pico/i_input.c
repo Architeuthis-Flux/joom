@@ -33,6 +33,7 @@
 #include "m_config.h"
 #include "hardware/uart.h"
 #include <stdlib.h>
+#define USB_SUPPORT 1
 #if USB_SUPPORT
 #include "pico/binary_info.h"
 #include "tusb.h"

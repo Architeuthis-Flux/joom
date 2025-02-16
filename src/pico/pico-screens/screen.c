@@ -5,6 +5,11 @@
 #include "screens/lilygo_ttgo.h"
 #endif
 
+//#if JUMPERLESS_V5
+#define JUMPERLESS_V5 1
+#include "screens/jumperless_v5.h"
+//#endif
+
 #if ST7789_240_135
 #include "screens/st7789_240_135.h"
 #endif
@@ -42,11 +47,14 @@ void I_initScreen(void) {
 // TODO get better aspect ratio screen
 #elif ST7735_128_128
     st7735_128_128_initScreen();
+#elif JUMPERLESS_V5
+    jumperless_initScreen();
+
 #endif
 }
 
 void I_handleFrameStart(uint8_t frame) {
-    gpio_put(PICO_DEFAULT_LED_PIN, 0);
+   // gpio_put(PICO_DEFAULT_LED_PIN, 0);
 #if ST7789_240_135
     st7789_240_135_handleFrameStart(frame);
 #elif LILYGO_TTGO
@@ -57,6 +65,8 @@ void I_handleFrameStart(uint8_t frame) {
     ssd1306_70_40_i2c_handleFrameStart(frame);
 #elif ST7735_128_128
     st7735_128_128_handleFrameStart(frame);
+#elif JUMPERLESS_V5
+    jumperless_handleFrameStart(frame);
 #endif
 
 }
@@ -72,6 +82,9 @@ void I_handleScanline(uint16_t *line, int scanline) {
     ssd1306_70_40_i2c_handleScanline(line, scanline);
 #elif ST7735_128_128
     st7735_128_128_handleScanline(line, scanline);
+#elif JUMPERLESS_V5
+    jumperless_handleScanline(line, scanline);
+
 #endif
 }
 
@@ -80,6 +93,8 @@ void I_handleFrameEnd(uint8_t frame) {
     ssd1306_70_40_handleFrameEnd(frame);
 #elif SSD1306_70_40_i2c
     ssd1306_70_40_i2c_handleFrameEnd(frame);
+#elif JUMPERLESS_V5
+    jumperless_handleFrameEnd(frame);
 #endif
     gpio_put(PICO_DEFAULT_LED_PIN, 1);
 }

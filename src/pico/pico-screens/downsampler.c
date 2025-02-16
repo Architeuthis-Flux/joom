@@ -1,7 +1,7 @@
 #include "pico.h"
 #include "i_video.h"
 
-// #define DOWNSAMPLING_FACTOR 2.0
+ #define DOWNSAMPLING_FACTOR 2.0
 const uint8_t DOWNSAMPLED_WIDTH = (uint8_t)(SCREENWIDTH / DOWNSAMPLING_FACTOR);
 const uint8_t DOWNSAMPLED_HEIGHT = (uint8_t)(SCREENHEIGHT / DOWNSAMPLING_FACTOR);
 

@@ -18,6 +18,7 @@ target_sources(common_pico INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/ssd1306_70_40.cpp
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/ssd1306_70_40_i2c.c
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/st7735_128_128.c
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/jumperless_v5.c
 )
 if (PICO_ON_DEVICE)
     target_sources(common_pico INTERFACE
@@ -50,6 +51,6 @@ target_compile_definitions(common_pico INTERFACE
 target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi)
 
 add_library(pico_cd INTERFACE)
-if (TARGET tinyusb_host)
+# if (TARGET tinyusb_host)
     target_link_libraries(pico_cd INTERFACE tinyusb_host)
-endif()
+# endif()

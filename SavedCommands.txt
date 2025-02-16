@@ -1,0 +1,15 @@
+picotool load -v -t bin E1m2wik2.lmp -o 0x10242000  
+
+
+
+picotool load -v -t bin doom1.whx -o 0x10042000
+
+
+
+
+make -j4  doom_tiny_usb_jumperless_v5
+
+
+picotool load -F -x src/doom_tiny_usb_jumperless_v5.uf2
+
+make -j4 && sudo picotool load -x src/doom_tiny_usb_jumperless_v5.uf2 -f

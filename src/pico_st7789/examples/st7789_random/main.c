@@ -12,7 +12,7 @@
 
 // lcd configuration
 const struct st7789_config lcd_config = {
-    .spi      = PICO_DEFAULT_SPI_INSTANCE,
+    .spi      = PICO_DEFAULT_SPI_INSTANCE(),
     .gpio_din = PICO_DEFAULT_SPI_TX_PIN,
     .gpio_clk = PICO_DEFAULT_SPI_SCK_PIN,
     .gpio_cs  = PICO_DEFAULT_SPI_CSN_PIN,

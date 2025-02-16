@@ -1,0 +1,28 @@
+#ifndef __JUMPERLESSLEDS__
+#define __JUMPERLESSLEDS__
+
+#include "shared.h"
+#include "pico.h"
+
+#include "pico/binary_info.h"
+#include "pico/stdlib.h"
+
+
+#include <stdlib.h>
+
+
+#define MEMORY_WIDTH 60
+#define MEMORY_HEIGHT 20
+
+#define LCD_WIDTH 30
+#define LCD_HEIGHT 14
+
+#define SCREEN_WIDTH_OFFSET ((LCD_WIDTH - (SCREENWIDTH * 100 / DOWNSAMPLING_FACTOR_OUT_OF_100)) / 2)
+
+
+void jumperless_initScreen(void);
+void jumperless_handleScanline(uint16_t *line, int scanline);
+void jumperless_handleFrameStart(uint8_t frame);
+void jumperless_handleFrameEnd(uint8_t frame);
+
+#endif

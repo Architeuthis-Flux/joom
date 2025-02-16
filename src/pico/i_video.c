@@ -17,7 +17,7 @@
 //	DOOM graphics stuff for Pico.
 //
 
-#if PICODOOM_RENDER_NEWHOPE
+//#if PICODOOM_RENDER_NEWHOPE
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
@@ -1214,4 +1214,4 @@ void I_DisplayFPSDots(boolean dots_on)
 {
 }
 
-#endif
+//#endif

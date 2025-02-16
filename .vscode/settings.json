@@ -8,6 +8,16 @@
         "shared.h": "c",
         "ssd1306_i2c.h": "c",
         "st7735_128_128.h": "c",
-        "video_doom.pio.h": "c"
+        "video_doom.pio.h": "c",
+        "stdlib.h": "c",
+        "jumperless_v5.h": "c",
+        "pico_jumperless_matrix.h": "c",
+        "ws2812.pio.h": "c",
+        "pio.h": "c",
+        "pico.h": "c",
+        "platform.h": "c",
+        "queue": "c",
+        "stack": "c",
+        "doomdef.h": "c"
     }
 }

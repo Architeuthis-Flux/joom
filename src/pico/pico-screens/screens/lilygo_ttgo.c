@@ -1,7 +1,7 @@
 #include "lilygo_ttgo.h"
 
 static const struct st7789_config lcd_config = {
-    .spi      = PICO_DEFAULT_SPI_INSTANCE,
+    .spi      = PICO_DEFAULT_SPI_INSTANCE(),
     .gpio_din = 3,
     .gpio_clk = 2,
     .gpio_cs  = 5,

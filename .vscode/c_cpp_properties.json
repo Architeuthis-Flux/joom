@@ -3,7 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/Users/kevinsanto/pico/pico-sdk/src/**",
+                "/Users/kevinsanto/pico/pico-extras/src/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

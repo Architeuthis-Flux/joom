@@ -23,9 +23,9 @@
 #include "doomtype.h"
 #include "doom/p_saveg.h"
 #endif
-#if USB_SUPPORT
+//#if USB_SUPPORT
 #include "tusb.h"
-#endif
+//#endif
 extern void I_InputInit();
 
 #include <stdlib.h>
@@ -488,13 +488,13 @@ void __attribute((noreturn)) I_Quit (void)
     buffer[0] = 0;
     exit_screen_kb_buffer_80 = buffer; // fine as this function never returns
     while (true) {
-#if PICO_ON_DEVICE
+//#if PICO_ON_DEVICE
         // no idea why the default timeout of 50 ms is NOT working here, hack hack hack away!
         I_GetEventTimeout(1000);
-#if USB_SUPPORT
+//#if USB_SUPPORT
         tuh_task();
-#endif
-#endif
+//#endif
+//#endif
         I_UpdateSound();
     }
 }

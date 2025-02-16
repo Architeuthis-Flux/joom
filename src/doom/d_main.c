@@ -81,9 +81,9 @@
 #include "d_main.h"
 #if PICO_BUILD
 #include "i_picosound.h"
-#if USB_SUPPORT
+//#if USB_SUPPORT
 #include "tusb.h"
-#endif
+//#endif
 #endif
 
 #include "hardware/gpio.h"
@@ -1343,7 +1343,7 @@ void D_DoomMain (void)
 //        }
 //    }
 #if !NO_USE_ENDDOOM && !PICO_DOOM
-    I_AtExit(D_Endoom, false);
+    I_AtExit(D_Endoom, true);
 #endif
 
     // print banner
@@ -1722,7 +1722,7 @@ void D_DoomMain (void)
 
 #if !NO_USE_ARGS
     p = M_CheckParmWithArgs ("-playdemo", 1);
-
+//p = 1;
     if (!p)
     {
         //!
@@ -1734,6 +1734,7 @@ void D_DoomMain (void)
         // of the screen.
         //
 	p = M_CheckParmWithArgs("-timedemo", 1);
+
 
     }
 

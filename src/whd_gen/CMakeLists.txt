@@ -1,7 +1,7 @@
 if (NOT PICO_ON_DEVICE)
     add_library(wad INTERFACE)
     target_sources(wad INTERFACE
-            wad.cpp)
+    ${CMAKE_CURRENT_LIST_DIR}/wad.cpp)
     target_include_directories(wad INTERFACE ${CMAKE_CURRENT_LIST_DIR})
 
     add_executable(whd_gen

@@ -29,7 +29,7 @@ extern "C" {
     static SSD1306* display;
 
     void ssd1306_70_40_initScreen(void) {
-        display = new SSD1306(128, 64, PICO_DEFAULT_SPI_INSTANCE, /*baudrate*/ 8000 * 1000, /*mosi*/ PICO_DEFAULT_SPI_TX_PIN, /*cs*/ PICO_DEFAULT_SPI_CSN_PIN, /*sclk*/ PICO_DEFAULT_SPI_SCK_PIN, /*reset*/ 21, /*dc*/ 20);
+        display = new SSD1306(128, 64, PICO_DEFAULT_SPI_INSTANCE(), /*baudrate*/ 8000 * 1000, /*mosi*/ PICO_DEFAULT_SPI_TX_PIN, /*cs*/ PICO_DEFAULT_SPI_CSN_PIN, /*sclk*/ PICO_DEFAULT_SPI_SCK_PIN, /*reset*/ 21, /*dc*/ 20);
         display->init();    
 
         // for(int y = 24; y < 64; y++) {
