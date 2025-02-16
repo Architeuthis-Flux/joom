@@ -31,82 +31,8 @@ uint offset;
 #error Attempting to use a pin>=32 on a platform that does not support it
 #endif
 
-static inline void put_pixel(PIO pio, uint sm, uint32_t pixel_grb) {
-
-    //pixel_grb &= 0x002f1f1f;
-    //pixel_grb <<= 8u;
-    uint8_t g = (pixel_grb & 0x00ff0000) >> 16;
-    uint8_t r = (pixel_grb & 0x0000ff00) >> 8;
-    uint8_t b = (pixel_grb & 0x000000ff);
-
-    if (r < 0x5a && g < 0x5a && b < 0x5a) {
-        r = 0x00;
-        g = 0x00;
-        b = 0x00;
-    }
-
-    if (r < 0x6a && b < 0x6a) {
-        r = 0x00;
-        b = 0x00;
-    }
-    if (r < 0x36) {
-        r = 0x00;
-    }
-    //g = g*32;
-
-    if (b < 0x46) {
-        g = b;
-        b = 0x00;
-        
-    }
-    
-     g = g*8;
-    r = r/8;
-     b = b/16;
-
-    //  if (g < 0x06) {
-    //      g = 0x00;
-    //  }
-
-    // pixel_grb &= 0xff000000;
-    // pixel_grb |= (g << 16);
-    
-    
-   //pixel_grb |= (r << 8);
-     //pixel_grb |= b;
 
 
-
-    // if ((pixel_grb & 0x00ff0000 >> 16) < 0x05) {
-    //     pixel_grb &= (0xff00ffff);  
-    // } 
-        
-    // if ((pixel_grb & 0x0000ff00 >> 8) < 0x05) {
-    //     pixel_grb &= (0xffff00ff);  
-    // }
-    
-    // if ((pixel_grb & 0x000000ff) < 0x05) {
-    //     pixel_grb &= (0xffffff00);  
-    // }
-    pixel_grb = (g << 24) | (r << 16) | (b << 8);
-    pio_sm_put_blocking(pio, sm, pixel_grb);
-}
-
-
-
-
-
-
-
-//make doom_tiny_usb_jumperless_v5
-
-void jumperless_clearScreen(void) {
-
-    for (int i = 0; i < NUM_PIXELS; ++i) {
-        put_pixel(pio, sm, 0);
-    }
-
-}
 
 void jumperless_initScreen(void) {
 
@@ -224,7 +150,7 @@ void jumperless_handleScanline(uint16_t *line, int scanline) {
 
 }
 
-// TODO there's definitely a better way to do this
+
 // with a separate "render" thread we could continue to oscillate between each frame while Doom renders the next
 // this allows for better persistence of vision without biasing towards any particular frame
 // but would also require a rewrite of the multithreading
@@ -245,62 +171,77 @@ void jumperless_handleFrameEnd(uint8_t frame) {
         }
     }
 
-    // for (int i = 300; i < NUM_PIXELS; i++) {
-    //     put_pixel(pio, sm, 0x05050505);
-    // }
 
-    //sleep_ms(100);
-    // for (int i = 0; i < SCREENWIDTH; i++) {
-    //     put_pixel(pio, sm, line[i]);
-    // }
-    
-    // park screen 
-    // SSD1306_send_cmd_list(command_park,count_of(command_park));
-
-    // // render first buffer
-    // SSD1306_render(buf, &screen_area);
-
-    // // unpark
-    // SSD1306_send_cmd_list(command_run,count_of(command_run));
-
-    // // use dead reckoning to try and get the screen to render once and only once, to avoid tearing
-    // sleep_us(4000);
-
-    // // park screen 
-    // SSD1306_send_cmd_list(command_park,count_of(command_park));
-
-    // // render second buffer
-    // SSD1306_render(second_buf, &screen_area);
-
-    // // unpark
-    // SSD1306_send_cmd_list(command_run,count_of(command_run));
-
-    // // use dead reckoning to try and get the screen to render once and only once, to avoid tearing
-    // sleep_us(4000);
-
-    // // park screen 
-    // SSD1306_send_cmd_list(command_park,count_of(command_park));
-
-    // // render third buffer
-    // SSD1306_render(third_buf, &screen_area);
-
-    // // unpark
-    // SSD1306_send_cmd_list(command_run,count_of(command_run));
-
-    // // use dead reckoning to try and get the screen to render once and only once, to avoid tearing
-    // sleep_us(4000);
-
-
-    // // park _again_, because  we don't know how long it'll take to render the next frame to Doom's framebuffer
-    // // and if we don't know, we can't avoid frame tearing
-    // SSD1306_send_cmd_list(command_park,count_of(command_park));
-
-    // SSD1306_send_cmd(SSD1306_SET_NORM_DISP);
 }
 
+static inline void put_pixel(PIO pio, uint sm, uint32_t pixel_grb) {
+
+    //pixel_grb &= 0x002f1f1f;
+    //pixel_grb <<= 8u;
+    uint8_t g = (pixel_grb & 0x00ff0000) >> 16;
+    uint8_t r = (pixel_grb & 0x0000ff00) >> 8;
+    uint8_t b = (pixel_grb & 0x000000ff);
+
+    if (r < 0x5a && g < 0x5a && b < 0x5a) {
+        r = 0x00;
+        g = 0x00;
+        b = 0x00;
+    }
+
+    if (r < 0x6a && b < 0x6a) {
+        r = 0x00;
+        b = 0x00;
+    }
+    if (r < 0x36) {
+        r = 0x00;
+    }
+    //g = g*32;
+
+    if (b < 0x46) {
+        g = b;
+        b = 0x00;
+        
+    }
+    
+     g = g*8;
+    r = r/8;
+     b = b/16;
+
+    //  if (g < 0x06) {
+    //      g = 0x00;
+    //  }
+
+    // pixel_grb &= 0xff000000;
+    // pixel_grb |= (g << 16);
+    
+    
+   //pixel_grb |= (r << 8);
+     //pixel_grb |= b;
 
 
 
+    // if ((pixel_grb & 0x00ff0000 >> 16) < 0x05) {
+    //     pixel_grb &= (0xff00ffff);  
+    // } 
+        
+    // if ((pixel_grb & 0x0000ff00 >> 8) < 0x05) {
+    //     pixel_grb &= (0xffff00ff);  
+    // }
+    
+    // if ((pixel_grb & 0x000000ff) < 0x05) {
+    //     pixel_grb &= (0xffffff00);  
+    // }
+    pixel_grb = (g << 24) | (r << 16) | (b << 8);
+    pio_sm_put_blocking(pio, sm, pixel_grb);
+}
+
+void jumperless_clearScreen(void) {
+
+    for (int i = 0; i < NUM_PIXELS; ++i) {
+        put_pixel(pio, sm, 0);
+    }
+
+}
 
 static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
     return

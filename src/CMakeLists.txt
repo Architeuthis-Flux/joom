@@ -611,7 +611,7 @@ function(add_doom_tiny SUFFIX SCREEN)
         target_compile_definitions(doom_tiny${SUFFIX} PRIVATE
                 PICO_AUDIO_I2S_DATA_PIN=20
                 PICO_AUDIO_I2S_CLOCK_PIN_BASE=21
-                NO_USE_UART=1
+                # //NO_USE_UART=1
                 )
         pico_enable_stdio_uart(doom_tiny${SUFFIX} 0)
     elseif(STAMP_HACK)

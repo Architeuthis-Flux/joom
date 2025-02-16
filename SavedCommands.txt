@@ -13,3 +13,14 @@ make -j4  doom_tiny_usb_jumperless_v5
 picotool load -F -x src/doom_tiny_usb_jumperless_v5.uf2
 
 make -j4 && sudo picotool load -x src/doom_tiny_usb_jumperless_v5.uf2 -f
+
+
+(from the rp2040-build folder)
+
+here's the cmake command that works for a Jumperless V5:
+
+cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPICO_BOARD=jumperless_v5 -DPICO_SDK_PATH=/Users/kevinsanto/pico/pico-sdk -DPICO_EXTRAS_PATH=/Users/kevinsanto/pico/pico-extras -DPICO_PLATFORM=rp2350 --fresh ..
+
+And this is the make and then load command (the Jumperless needs to be in BOOTSEL until I figure out USB stuff)
+
+make -j4 doom_tiny_usb_jumperless_v5 && picotool load -x src/doom_tiny_usb_jumperless_v5.uf2 -f
