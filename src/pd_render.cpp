@@ -10,8 +10,11 @@
 #include "picodoom.h"
 #include "pico/sem.h"
 #include "hardware/gpio.h"
+// #include "hardware/spi.h"
 #include "pico/divider.h"
 #include "image_decoder.h"
+
+
 #include <set>
 extern "C" {
 #include "doom/d_main.h"
@@ -29,7 +32,12 @@ extern "C" {
 #include "doom/f_finale.h"
 #include "v_video.h"
 #include "i_video.h"
+// #include "pico/stdlib.h"
+#if PICO_ON_DEVICE
+#include "pico/st7789.h"
+#endif
 }
+
 // todo compare with and without
 #define USE_XIPCPY 0
 #if PICO_ON_DEVICE
@@ -763,6 +771,7 @@ static void push_down_x(int x, int new_index) {
 }
 
 void pd_begin_frame() {
+    // st7789_fill(0xffff);
     DEBUG_PINS_SET(start_end, 1);
     if (gamestate == GS_LEVEL) {
 //        render_frame_index ^= 1;
@@ -791,6 +800,8 @@ void pd_begin_frame() {
     render_col_free = -1;
     pd_frame++;
     DEBUG_PINS_CLR(start_end, 1);
+    // sleep_ms(100);
+    // st7789_fill(0x0000);
 }
 
 static void interp_init() {

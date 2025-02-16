@@ -1,4 +1,29 @@
-# RP2040 (+RP2350) Doom
+# RP2040 Doom, now for I2C and SPI displays!
+
+![](https://i.imgur.com/QxaZdQg.jpeg)
+
+[youtube short here](https://www.youtube.com/shorts/YlykSvr83Jc)
+
+This is a fork of Graham Sanderson's Doom port for the RP2040. It adds support for certain SPI and I2c displays; it's also _very much_ not finished, but it does work. 
+
+Graham's original port used a DVI signal, which was very ambitious and all the more impressive that he pulled it off. He had many optimizations to make his code as fast as possible and used a scanline buffer array in order to make the tight timings DVI signal requires.
+
+I ripped out almost all of those optimizations (except for the VPatch stuff), slapped on a line buffer and some downsampling code, and then made an interface to blit that buffer to different displays. It uh... it was a lot of work, it just doesn't sound like it.
+
+You build just as you would for the original Doom port; I've modified the CMake targets to spit out binaries for each display.
+
+A non-exhaustive list of the hardware that has run this port:
+
+* a Raspberry Pi Pico
+* My custom PCB with one of [these](https://www.aliexpress.us/item/3256803794221438.html?spm=a2g0o.order_list.order_list_main.4.651c1802EaKSD2&gatewayAdapt=glo2usa), either the 0.96 or the 1.14 inch displays
+* [this little guy](https://www.aliexpress.us/item/3256804711797928.html?spm=a2g0o.order_list.order_list_main.107.651c1802EaKSD2&gatewayAdapt=glo2usa)
+* A [Lilygo TTGo T-Display](https://www.aliexpress.us/item/3256803094729227.html?spm=a2g0o.order_list.order_list_main.127.651c1802EaKSD2&gatewayAdapt=glo2usa)
+
+The mipi display library should allow for the addition of many more displays with minimal effort, but I can't give support for adding new displays right now, so you're on your own! If you do want to add a display I encourage you to look at the commit diffs and the pull request to get better context on what changed and why.
+
+# Original description
+
+# RP2040 Doom
 
 This is a port of Doom for RP2040 / RP2350 devices, derived from [Chocolate Doom](https://github.com/chocolate-doom/chocolate-doom).
 
@@ -140,7 +165,7 @@ binary would just have made things bigger and slower.
 [SDL Event Forwarder](https://github.com/kilograham/sdl_event_forwarder) to tunnel keyboard input from your host 
   computer over UART. The WHX file must be loaded at `0x10040000`. 
 * **doom_tiny_usb** This is a "super tiny" version with additional USB keyboard support. Because of the extra USB 
-  code, the WHX file must be loaded at `0x10042000`. As you can see USB support via TinyUSB causes the binary to 
+  code, the WHX file must be loaded at `0x10044000`. As you can see USB support via TinyUSB causes the binary to 
   grow by 2K (hence the move of the WHX file address) leaving less space for saved games (which are also stored in 
   flash).
 * **doom_tiny_nost** This is a "non super tiny" version of `doom_tiny` supporting larger WADs stored as WHD. The WHD 
@@ -152,7 +177,7 @@ binary would just have made things bigger and slower.
 You can load you WHD/WHX file using [picotool](https://github.com/raspberrypi/picotool). e.g.
 
 ```bash
-picotool load -v -t bin doom1.whx -o 0x10042000.
+picotool load -v -t bin doom1.whx -o 0x10044000.
 ```
 
 See `whd_gen` further below for generating `WHX` or `WHD` files.

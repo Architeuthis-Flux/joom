@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "picodoom.h": "c",
+        "st7789_240_135.h": "c",
+        "screen.h": "c",
+        "lilygo_ttgo.h": "c",
+        "shared.h": "c",
+        "ssd1306_i2c.h": "c",
+        "st7735_128_128.h": "c",
+        "video_doom.pio.h": "c"
+    }
+}

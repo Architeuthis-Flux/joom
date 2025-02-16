@@ -85,6 +85,9 @@
 #include "tusb.h"
 #endif
 #endif
+
+#include "hardware/gpio.h"
+
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -105,7 +108,6 @@ char *          savegamedir;
 
 char *          iwadfile;
 #endif
-
 
 boolean		devparm;	// started game with -devparm
 boolean         nomonsters;	// checkparm of -nomonsters
@@ -1572,6 +1574,10 @@ void D_DoomMain (void)
 #endif
 
     DEH_printf("W_Init: Init WADfiles.\n");
+    
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+    gpio_put(PICO_DEFAULT_LED_PIN, 1);
 #if !NO_FILE_ACCESS && !DOOM_TINY
     D_AddFile(iwadfile);
 #else
@@ -1584,6 +1590,8 @@ void D_DoomMain (void)
 #else
     gamemission = IdentifyIWADByName(whdheader->name);
 #endif
+
+    gpio_put(PICO_DEFAULT_LED_PIN, 0);
 
     // Now that we've loaded the IWAD, we can figure out what gamemission
     // we're playing and which version of Vanilla Doom we need to emulate.
@@ -1693,6 +1701,8 @@ void D_DoomMain (void)
     //  3. PWAD dehacked patches in DEHACKED lumps.
     DEH_ParseCommandLine();
 #endif
+
+
 
 #if !DOOM_TINY
     // Load PWAD files.

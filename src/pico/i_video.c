@@ -50,14 +50,13 @@
 #include "pico/time.h"
 #include "hardware/gpio.h"
 #include "picodoom.h"
-#include "video_doom.pio.h"
 #include "image_decoder.h"
+#include "pico-screens/screen.h"
 #if PICO_ON_DEVICE
 #include "hardware/dma.h"
 #include "hardware/structs/xip_ctrl.h"
 #endif
 
-#define YELLOW_SUBMARINE 0
 #define SUPPORT_TEXT 1
 #if SUPPORT_TEXT
 typedef struct __packed {
@@ -68,6 +67,7 @@ typedef struct __packed {
 } txt_font_t;
 #define TXT_SCREEN_W 80
 #include "fonts/normal.h"
+
 
 static uint16_t ega_colors[] = {
     PICO_SCANVIDEO_PIXEL_FROM_RGB8(0x00, 0x00, 0x00),         // 0: Black
@@ -91,7 +91,8 @@ static uint16_t ega_colors[] = {
 
 // todo temproarly turned this off because it causes a seeming bug in scanvideo (perhaps only with the new callback stuff) where the last repeated scanline of a pixel line is freed while shown
 //  note it may just be that this happens anyway, but usually we are writing slower than the beam?
-#define USE_INTERP PICO_ON_DEVICE
+//  previously PICO_ON_DEVICE but disabled to save scratch_x space
+#define USE_INTERP 0
 #if USE_INTERP
 #include "hardware/interp.h"
 #endif
@@ -103,11 +104,11 @@ static const patch_t *stbar;
 
 volatile uint8_t interp_in_use;
 
-#define USE_1280x1024x60 1
-
 // display has been set up?
 
 static boolean initialized = false;
+
+static uint32_t frame = 0;
 
 boolean screenvisible = true;
 
@@ -130,117 +131,16 @@ pixel_t *I_VideoBuffer; // todo can't have this
 
 uint8_t __aligned(4) frame_buffer[2][SCREENWIDTH*MAIN_VIEWHEIGHT];
 static uint16_t palette[256];
-static uint16_t __scratch_x("shared_pal") shared_pal[NUM_SHARED_PALETTES][16];
+static uint16_t __scratch_x("shared_pal") shared_pal[NUM_SHARED_PALETTES][16]; // TODO I can't fit all this in scratch but it's probably going to affect performance
 static int8_t next_pal=-1;
 
 semaphore_t render_frame_ready, display_frame_freed;
 semaphore_t core1_launch;
 
 uint8_t *text_screen_data;
-static uint32_t *text_scanline_buffer_start;
+static uint16_t *text_scanline_buffer_start;
 static uint8_t *text_screen_cpy;
 static uint8_t *text_font_cpy;
-
-#if USE_1280x1024x60
-//static uint32_t missing_scanline_data[] = {
-//        video_doom_offset_raw_1p | (0 << 16u),
-//        video_doom_offset_end_of_scanline_skip_ALIGN
-//};
-
-static uint32_t missing_scanline_data[] =
-        {
-#if YELLOW_SUBMARINE
-                video_doom_offset_color_run | (PICO_SCANVIDEO_PIXEL_FROM_RGB8(255,255,0) << 16u),
-                120 | (video_doom_offset_raw_1p << 16u),
-#endif
-                0u | (video_doom_offset_end_of_scanline_ALIGN << 16u)
-        };
-
-#if PICO_ON_DEVICE
-bool video_doom_adapt_for_mode(const struct scanvideo_pio_program *program, const struct scanvideo_mode *mode,
-                               struct scanvideo_scanline_buffer *missing_scanvideo_scanline_buffer, uint16_t *modifiable_instructions);
-pio_sm_config video_doom_configure_pio(pio_hw_t *pio, uint sm, uint offset);
-#endif
-#define VIDEO_DOOM_PROGRAM_NAME "doom"
-const struct scanvideo_pio_program video_doom = {
-#if PICO_ON_DEVICE
-        .program = &video_doom_program,
-        .adapt_for_mode = video_doom_adapt_for_mode,
-        .configure_pio = video_doom_configure_pio,
-#else
-        .id = VIDEO_DOOM_PROGRAM_NAME
-#endif
-};
-
-const scanvideo_timing_t vga_timing_1280x1000_60_default = // same as 1280x1024_60 standard just with some 12 blank lines at the top and bottom
-        {
-                .clock_freq = 108000000,
-
-                .h_active = 1280,
-                .v_active = 1024 - 24,
-
-                .h_front_porch = 48,
-                .h_pulse = 112,
-                .h_total = 1688,
-                .h_sync_polarity = 0,
-
-                .v_front_porch = 1 + 24 - 12, // center our slightly short screen
-                .v_pulse = 3,
-                .v_total = 1066,
-                .v_sync_polarity = 0,
-        };
-
-const scanvideo_timing_t vga_timing_640x1000_60_default = // same as 1280x1024_60 standard just with some 12 blank lines at the top and bottom
-        {
-                .clock_freq = 108000000 / 2,
-
-#if PICO_ON_DEVICE
-                .h_active = 1280 / 2,
-#else
-                .h_active = 1280,
-#endif
-                .v_active = 1024 - 24,
-
-                .h_front_porch = 48 / 2,
-                .h_pulse = 112 / 2,
-                .h_total = 1688 / 2,
-                .h_sync_polarity = 0,
-
-                .v_front_porch = 1 + 24 - 12, // center our slightly short screen
-                .v_pulse = 3,
-                .v_total = 1066,
-                .v_sync_polarity = 0,
-        };
-
-const scanvideo_mode_t vga_mode_320x200 =
-        {
-                .default_timing = &vga_timing_640x1000_60_default,
-                .pio_program = &video_doom,
-#if PICO_ON_DEVICE
-                .width = 320,
-#else
-                .width = 640,
-#endif
-                .height = 200,
-                .xscale = 2,
-                .yscale = 5,
-        };
-#define VGA_MODE vga_mode_320x200
-#elif USE_320x240x60
-#define VGA_MODE vga_mode_320x240_60
-#else
-const scanvideo_mode_t vga_mode_320x200_60 =
-        {
-                .default_timing = &vga_timing_1280x1024_60_default,
-                .pio_program = &video_24mhz_composable,
-                .width = 320,
-                .height = 204,
-                .xscale = 4,
-                .yscale = 5,
-        };
-
-#define VGA_MODE vga_mode_320x200_60
-#endif
 
 #if USE_INTERP
 static interp_hw_save_t interp0_save, interp1_save;
@@ -308,21 +208,12 @@ uint8_t display_frame_index;
 uint8_t display_overlay_index;
 uint8_t display_video_type;
 
-typedef void (*scanline_func)(uint32_t *dest, int scanline);
+typedef void (*scanline_func)(uint16_t *dest, int scanline);
 
-static void scanline_func_none(uint32_t *dest, int scanline);
-static void scanline_func_double(uint32_t *dest, int scanline);
-static void scanline_func_single(uint32_t *dest, int scanline);
-static void scanline_func_wipe(uint32_t *dest, int scanline);
-
-scanline_func scanline_funcs[] = {
-        scanline_func_none,     // VIDEO_TYPE_NONE
-        NULL,                   // VIDEO_TYPE_TEXT
-        scanline_func_single,   // VIDEO_TYPE_SAVING
-        scanline_func_double,   // VIDEO_TYPE_DOUBLE
-        scanline_func_single,   // VIDEO_TYPE_SINGLE
-        scanline_func_wipe,     // VIDEO_TYPE_WIPE
-};
+static void scanline_func_none(uint16_t *dest, int scanline);
+static void scanline_func_double(uint16_t *dest, int scanline);
+static void scanline_func_single(uint16_t *dest, int scanline);
+static void scanline_func_wipe(uint16_t *dest, int scanline);
 
 uint8_t *wipe_yoffsets; // position of start of y in each column
 int16_t *wipe_yoffsets_raw;
@@ -335,14 +226,14 @@ uint8_t *next_video_scroll;
 uint8_t *video_scroll;
 #endif
 volatile uint8_t wipe_min;
-uint32_t *saved_scanline_buffer_ptrs[PICO_SCANVIDEO_SCANLINE_BUFFER_COUNT];
+uint16_t *saved_scanline_buffer_ptrs[PICO_SCANVIDEO_SCANLINE_BUFFER_COUNT]; // Bob: I changed this from 32 to 16 but I'm not sure that's kocher
 
 #pragma GCC push_options
 #if PICO_ON_DEVICE
 #pragma GCC optimize("O3")
 #endif
 
-static inline void palette_convert_scanline(uint32_t *dest, const uint8_t *src) {
+static inline void palette_convert_scanline(uint16_t *dest, const uint8_t *src) {
 #if USE_INTERP
     if (interp_updated != 1) {
                 if (need_save) {
@@ -373,50 +264,40 @@ static inline void palette_convert_scanline(uint32_t *dest, const uint8_t *src) 
             dest += SCREENWIDTH / 2;
 //            dest[-4] = (255-scanline) * 0x10001;
 #else
-    for (int i = 0; i < SCREENWIDTH; i += 2) {
-        uint32_t val = palette[*src++];
-        val |= (palette[*src++]) << 16;
+    for (int i = 0; i < SCREENWIDTH; i++) {
+        uint16_t val = palette[*src++];;
         *dest++ = val;
     }
 #endif
 }
-static void scanline_func_none(uint32_t *dest, int scanline) {
-    memset(dest, 0, SCREENWIDTH * 2);
+
+static void scanline_func_none(uint16_t *dest, int scanline) {
+    memset(dest, 0, SCREENWIDTH);
 }
 
 #if SUPPORT_TEXT
-void check_text_buffer(scanvideo_scanline_buffer_t *buffer) {
+void check_text_buffer(uint16_t *buffer) {
 #if PICO_ON_DEVICE
-    if (buffer->data < text_scanline_buffer_start || buffer->data >= text_scanline_buffer_start + TEXT_SCANLINE_BUFFER_TOTAL_WORDS) {
+    if (buffer < text_scanline_buffer_start || buffer >= text_scanline_buffer_start + TEXT_SCANLINE_BUFFER_TOTAL_WORDS) {
         // is an original scanvideo allocated buffer, we need to use a larger one
         int i;
         for(i=0;i<PICO_SCANVIDEO_SCANLINE_BUFFER_COUNT;i++) {
             if (!saved_scanline_buffer_ptrs[i]) break;
         }
         assert(i<PICO_SCANVIDEO_SCANLINE_BUFFER_COUNT);
-        saved_scanline_buffer_ptrs[i] = buffer->data;
-        buffer->data = text_scanline_buffer_start + i * TEXT_SCANLINE_BUFFER_WORDS;
+        saved_scanline_buffer_ptrs[i] = buffer;
+        buffer = text_scanline_buffer_start + i * TEXT_SCANLINE_BUFFER_WORDS;
     }
 #endif
 }
 
-static void finish_text_buffer(scanvideo_scanline_buffer_t *buffer) {
-    uint16_t * p = (uint16_t *)buffer->data;
-    p[0] = video_doom_offset_raw_run_half;
-    p[1] = p[2];
-    p[2] = SCREENWIDTH*2 - 3;
-    buffer->data[SCREENWIDTH + 1] = video_doom_offset_raw_1p;
-    buffer->data[SCREENWIDTH + 2] = video_doom_offset_end_of_scanline_skip_ALIGN;
-    buffer->data_used = SCREENWIDTH + 3;
-}
-
-static void __not_in_flash_func(render_text_mode_half_scanline)(scanvideo_scanline_buffer_t *buffer, const uint8_t *text_data, int yoffset) {
-    uint16_t * p = (uint16_t *)(buffer->data + 1);
+static void __not_in_flash_func(render_text_mode_half_scanline)(uint16_t *buffer, const uint8_t *text_data, int yoffset) {
+    uint16_t * p = (uint16_t *)(buffer);
 //    memset(buffer->data + 1, 0, 1280);
 //    uint x = scanline * 2 + yoffset;
 //    buffer->data[1 + (x/2)] = x&1 ? 0xffff0000 : 0xffff;
 #if 1
-    uint blink = scanvideo_frame_number(buffer->scanline_id) & 16;
+    uint blink = frame & 16;
     // not going to change so just hard code
 //    assert(normal_font.w == 8);
 //    assert(normal_font.h == 16);
@@ -514,59 +395,31 @@ static void __not_in_flash_func(render_text_mode_half_scanline)(scanvideo_scanli
 #endif
 }
 
-static void __noinline render_text_mode_scanline(scanvideo_scanline_buffer_t *buffer, int scanline) {
-#if 1
+static void __noinline render_text_mode_scanline(uint16_t *buffer, int scanline) {
     const uint8_t *text_data = text_screen_data;
     assert(text_data);
     text_data += TXT_SCREEN_W * 2 * (scanline/8);
     check_text_buffer(buffer);
     render_text_mode_half_scanline(buffer, text_data, (scanline & 7u)*2 );
-    finish_text_buffer(buffer);
-    if (buffer->link) {
-        buffer->link_after = 2;
-        buffer->link->link_after = 0;
-        check_text_buffer(buffer->link);
-        render_text_mode_half_scanline(buffer->link, text_data, (scanline & 7u)*2 + 1);
-        finish_text_buffer(buffer->link);
-    }
-#else
-    uint16_t *p = (uint16_t *)buffer->data;
-    p[0] = video_doom_offset_raw_run;
-    p[1] = p[2];
-    p[2] = SCREENWIDTH - 3;
-    memset(buffer->data+1, 0x1f * ((scanline + 8) / 8), SCREENWIDTH * 2);
-    if (buffer->link) {
-        buffer->link_after = 2;
-        scanvideo_scanline_buffer_t *buffer2  = buffer->link;
-        memset(buffer2->data+1, 0xf1 * ((scanline + 8) / 8), SCREENWIDTH * 2);
-        p = (uint16_t *)buffer2->data;
-        p[0] = video_doom_offset_raw_run;
-        p[1] = p[2];
-        p[2] = SCREENWIDTH - 3;
-        buffer2->data[SCREENWIDTH / 2 + 1] = video_doom_offset_raw_1p;
-        buffer2->data[SCREENWIDTH / 2 + 2] = video_doom_offset_end_of_scanline_skip_ALIGN;
-        buffer2->data_used = SCREENWIDTH / 2 + 3;
-    }
-    buffer->data[SCREENWIDTH / 2 + 1] = video_doom_offset_raw_1p;
-    buffer->data[SCREENWIDTH / 2 + 2] = video_doom_offset_end_of_scanline_skip_ALIGN;
-    buffer->data_used = SCREENWIDTH / 2 + 3;
-#endif
 }
 #endif
 
-static void __scratch_x("scanlines") scanline_func_double(uint32_t *dest, int scanline) {
-    if (scanline < MAIN_VIEWHEIGHT) {
-        const uint8_t *src = frame_buffer[display_frame_index] + scanline * SCREENWIDTH;
-//        if (scanline == 100) {
-//            printf("SL %d %p\n", display_frame_index, &frame_buffer[display_frame_index]);
-//        }
+static void scanline_func_double(uint16_t *dest, int scanline) {
+    const uint8_t* src = frame_buffer[display_frame_index] + scanline * SCREENWIDTH;
+
+    if (scanline < MAIN_VIEWHEIGHT) { 
+        // for (int x = 0; x < DOOM_WIDTH; x++) {
+            // const uint8_t* source_color = src + x;
+            // uint16_t palette_color = palette[*source_color];
+            // dest[x] = palette_color;
+        // }
         palette_convert_scanline(dest, src);
     } else {
         // we expect everything to be overdrawn by statusbar so we do nothing
     }
 }
 
-static void __not_in_flash_func(scanline_func_single)(uint32_t *dest, int scanline) {
+static void __not_in_flash_func(scanline_func_single)(uint16_t *dest, int scanline) {
     uint8_t *src;
     if (scanline < MAIN_VIEWHEIGHT) {
         src = frame_buffer[display_frame_index] + scanline * SCREENWIDTH;
@@ -584,17 +437,8 @@ static void __not_in_flash_func(scanline_func_single)(uint32_t *dest, int scanli
     palette_convert_scanline(dest, src);
 }
 
-static void scanline_func_wipe(uint32_t *dest, int scanline) {
+static void scanline_func_wipe(uint16_t *dest, int scanline) {
     const uint8_t *src;
-#if 0
-    if (scanline < MAIN_VIEWHEIGHT) {
-        src = frame_buffer[display_frame_index^1] + scanline * SCREENWIDTH;
-    } else {
-        src = frame_buffer[display_frame_index] + (scanline - 32) * SCREENWIDTH;
-    }
-    palette_convert_scanline(dest, src);
-    return;
-#endif
     if (scanline < MAIN_VIEWHEIGHT) {
         src = frame_buffer[display_frame_index];
     } else {
@@ -607,6 +451,8 @@ static void scanline_func_wipe(uint32_t *dest, int scanline) {
         int rel = scanline - wipe_yoffsets[i];
         if (rel < 0) {
             d[i] = palette[src[i]];
+            // st7789_put(rgb_to_bgr(palette[src[i]]));
+            // dest[i] = rgb_to_bgr(palette[src[i]]);
         } else {
             const uint8_t *flip;
 #if PICO_ON_DEVICE
@@ -617,6 +463,8 @@ static void scanline_func_wipe(uint32_t *dest, int scanline) {
             // todo better protection here
             if (flip >= &frame_buffer[0][0] && flip < &frame_buffer[0][0] + 2 * SCREENWIDTH * MAIN_VIEWHEIGHT) {
                 d[i] = palette[flip[i]];
+                // st7789_put(rgb_to_bgr(palette[flip[i]]));
+                // dest[i] = rgb_to_bgr(palette[src[i]]);
             }
         }
     }
@@ -890,7 +738,7 @@ void __noinline new_frame_init_overlays_palette_and_wipe() {
                         g = gammatable[usegamma-1][g];
                         b = gammatable[usegamma-1][b];
                     }
-                    palette[i] = PICO_SCANVIDEO_PIXEL_FROM_RGB8(r, g, b);
+                    palette[i] = PICO_SCANVIDEO_PIXEL_FROM_RGB8(b, g, r); // BOB: don't ask I have no idea
                 }
             } else {
                 int mul, r0, g0, b0;
@@ -912,7 +760,7 @@ void __noinline new_frame_init_overlays_palette_and_wipe() {
                     r += ((r0 - r) * mul) >> 16;
                     g += ((g0 - g) * mul) >> 16;
                     b += ((b0 - b) * mul) >> 16;
-                    palette[i] = PICO_SCANVIDEO_PIXEL_FROM_RGB8(r, g, b);
+                    palette[i] = PICO_SCANVIDEO_PIXEL_FROM_RGB8(b, g, r);
                 }
             }
             next_pal = -1;
@@ -960,108 +808,102 @@ void __noinline new_frame_init_overlays_palette_and_wipe() {
 // this method moved out of scratchx because we didn't have quite enough space for core1 stack
 void __no_inline_not_in_flash_func(new_frame_stuff)() {
     // this part of the per frame code is in RAM as it is needed during save
-    if (sem_available(&render_frame_ready)) {
-        sem_acquire_blocking(&render_frame_ready);
-        display_video_type = next_video_type;
-        display_frame_index = next_frame_index;
-        display_overlay_index = next_overlay_index;
+    sem_acquire_blocking(&render_frame_ready);
+    display_video_type = next_video_type;
+    display_frame_index = next_frame_index;
+    display_overlay_index = next_overlay_index;
 #if !DEMO1_ONLY
-        video_scroll = next_video_scroll; // todo does this waste too much space
+    video_scroll = next_video_scroll; // todo does this waste too much space
 #endif
-        sem_release(&display_frame_freed);
-    } else {
-#if !DEMO1_ONLY
-        video_scroll = NULL;
-#endif
-    }
+    sem_release(&display_frame_freed);
     if (display_video_type != VIDEO_TYPE_SAVING) {
         // this stuff is large (so in flash) and not needed in save move
         new_frame_init_overlays_palette_and_wipe();
     }
 }
 
+// this is the code that sorts the vpatches and passes them to draw_vpatch, which directly draws the relevant pixels of the overlay into the buffer
+void __scratch_x("scanlines") handle_overlays(uint16_t *buffer, int scanline) {
+    assert(scanline < count_of(vpatchlists->vpatch_starters));
+    int prev = 0;
+    for (int vp = vpatchlists->vpatch_starters[scanline]; vp;) {
+        int next = vpatchlists->vpatch_next[vp];
+        while (vpatchlists->vpatch_next[prev] && vpatchlists->vpatch_next[prev] < vp) {
+            prev = vpatchlists->vpatch_next[prev];
+        }
+        assert(prev != vp);
+        assert(vpatchlists->vpatch_next[prev] != vp);
+        vpatchlists->vpatch_next[vp] = vpatchlists->vpatch_next[prev];
+        vpatchlists->vpatch_next[prev] = vp;
+        prev = vp;
+        vp = next;
+    }
+    vpatchlist_t *overlays = vpatchlists->overlays[display_overlay_index];
+    prev = 0;
+    for (int vp = vpatchlists->vpatch_next[prev]; vp; vp = vpatchlists->vpatch_next[prev]) {
+        patch_t *patch = resolve_vpatch_handle(overlays[vp].entry.patch_handle);
+        int yoff = scanline - overlays[vp].entry.y;
+        if (yoff < vpatch_height(patch)) {
+            vpatchlists->vpatch_doff[vp] = draw_vpatch((uint16_t*)(buffer), patch, &overlays[vp],
+                                                        vpatchlists->vpatch_doff[vp]);
+            prev = vp;
+        } else {
+            vpatchlists->vpatch_next[prev] = vpatchlists->vpatch_next[vp];
+        }
+    }
+}
+
 void __scratch_x("scanlines") fill_scanlines() {
-#if SUPPORT_TEXT
-    struct scanvideo_scanline_buffer *buffer = scanvideo_begin_scanline_generation_linked(display_video_type == VIDEO_TYPE_TEXT ? 2 : 1, false);
-#else
-    struct scanvideo_scanline_buffer *buffer = scanvideo_begin_scanline_generation(false);
-#endif
+    frame++;
+    // this shouldn't be here, but it's required for some reason
+    if (display_video_type != VIDEO_TYPE_SAVING && frame > 1) {
+        // this stuff is large (so in flash) and not needed in save move
+        new_frame_init_overlays_palette_and_wipe();
+    }
+
+
 #if USE_INTERP
     need_save = interp_in_use;
     interp_updated = 0;
 #endif
+    uint16_t buffer[SCREENWIDTH];
+    I_handleFrameStart(frame);
 
-    while (buffer) {
-        static int8_t last_frame_number = -1;
-        int frame = scanvideo_frame_number(buffer->scanline_id);
-        int scanline = scanvideo_scanline_number(buffer->scanline_id);
-        if ((int8_t) frame != last_frame_number) {
-            last_frame_number = frame;
-            new_frame_stuff();
-        }
+    const uint8_t end_scanline = SUPPORT_OVERLAYS ? SCREENHEIGHT : MAIN_VIEWHEIGHT;
 
+    for (int scanline = 0; scanline < end_scanline; scanline++){
         DEBUG_PINS_SET(scanline_copy, 1);
-        if (display_video_type != VIDEO_TYPE_TEXT) {
-            // we don't have text mode -> normal transition yet, but we may for network game, so leaving this here - we would need to put the buffer pointers back
-            assert (buffer->data < text_scanline_buffer_start || buffer->data >= text_scanline_buffer_start + TEXT_SCANLINE_BUFFER_TOTAL_WORDS);
-            scanline_funcs[display_video_type](buffer->data+1, scanline);
-            if (display_video_type >= FIRST_VIDEO_TYPE_WITH_OVERLAYS) {
-                assert(scanline < count_of(vpatchlists->vpatch_starters));
-                int prev = 0;
-                for (int vp = vpatchlists->vpatch_starters[scanline]; vp;) {
-                    int next = vpatchlists->vpatch_next[vp];
-                    while (vpatchlists->vpatch_next[prev] && vpatchlists->vpatch_next[prev] < vp) {
-                        prev = vpatchlists->vpatch_next[prev];
-                    }
-                    assert(prev != vp);
-                    assert(vpatchlists->vpatch_next[prev] != vp);
-                    vpatchlists->vpatch_next[vp] = vpatchlists->vpatch_next[prev];
-                    vpatchlists->vpatch_next[prev] = vp;
-                    prev = vp;
-                    vp = next;
-                }
-                vpatchlist_t *overlays = vpatchlists->overlays[display_overlay_index];
-                prev = 0;
-                for (int vp = vpatchlists->vpatch_next[prev]; vp; vp = vpatchlists->vpatch_next[prev]) {
-                    patch_t *patch = resolve_vpatch_handle(overlays[vp].entry.patch_handle);
-                    int yoff = scanline - overlays[vp].entry.y;
-                    if (yoff < vpatch_height(patch)) {
-                        vpatchlists->vpatch_doff[vp] = draw_vpatch((uint16_t*)(buffer->data + 1), patch, &overlays[vp],
-                                                                   vpatchlists->vpatch_doff[vp]);
-                        prev = vp;
-                    } else {
-                        vpatchlists->vpatch_next[prev] = vpatchlists->vpatch_next[vp];
-                    }
-                }
-            }
-            uint16_t *p = (uint16_t *) buffer->data;
-            p[0] = video_doom_offset_raw_run;
-            p[1] = p[2];
-            p[2] = SCREENWIDTH - 3;
-            buffer->data[SCREENWIDTH / 2 + 1] = video_doom_offset_raw_1p;
-            buffer->data[SCREENWIDTH / 2 + 2] = video_doom_offset_end_of_scanline_skip_ALIGN;
-            buffer->data_used = SCREENWIDTH / 2 + 3;
-            DEBUG_PINS_CLR(scanline_copy, 1);
-        } else {
+        switch(display_video_type) {
+            case VIDEO_TYPE_NONE :
+                scanline_func_none(buffer, scanline);
+                break;
+            case VIDEO_TYPE_SINGLE : 
+                scanline_func_single(buffer, scanline);
+                break;
+            case VIDEO_TYPE_DOUBLE :
+                scanline_func_double(buffer,scanline);
+                break;
+            case VIDEO_TYPE_WIPE :
+                scanline_func_wipe(buffer, scanline);
+                break;
 #if SUPPORT_TEXT
-            render_text_mode_scanline(buffer, scanline);
-#else
-            memset(buffer->data + 1, 0, SCREENWIDTH * 2);
-            p[0] = video_doom_offset_raw_run;
-            p[1] = p[2];
-            p[2] = SCREENWIDTH - 3;
-            buffer->data[SCREENWIDTH / 2 + 1] = video_doom_offset_raw_1p;
-            buffer->data[SCREENWIDTH / 2 + 2] = video_doom_offset_end_of_scanline_skip_ALIGN;
-            buffer->data_used = SCREENWIDTH / 2 + 3;
+            case VIDEO_TYPE_TEXT :
+                render_text_mode_scanline(buffer, scanline);
+                break;
 #endif
+            default: 
+                scanline_func_none(buffer, scanline);
+                break;
         }
-        scanvideo_end_scanline_generation(buffer);
-#if SUPPORT_TEXT
-        buffer = scanvideo_begin_scanline_generation_linked(display_video_type == VIDEO_TYPE_TEXT ? 2 : 1, false);
-#else
-        buffer = scanvideo_begin_scanline_generation(false);
-#endif
+        if (display_video_type >= FIRST_VIDEO_TYPE_WITH_OVERLAYS && SUPPORT_OVERLAYS) {
+            handle_overlays(buffer, scanline);
+        }
+        I_handleScanline(buffer, scanline);
+
+        DEBUG_PINS_CLR(scanline_copy, 1);
     }
+    I_handleFrameEnd(frame);
+    new_frame_stuff();
 #if USE_INTERP
     if (interp_updated && need_save) {
         interp_restore_static(interp0, &interp0_save);
@@ -1088,30 +930,13 @@ static void __not_in_flash_func(free_buffer_callback)() {
 
 //static semaphore_t init_sem;
 static void core1() {
-#if !PICO_ON_DEVICE
-    void simulate_video_pio_video_doom(const uint32_t *dma_data, uint32_t dma_data_size,
-                                       uint16_t *pixel_buffer, int32_t max_pixels, int32_t expected_width, bool overlay);
-    scanvideo_set_simulate_scanvideo_pio_fn(VIDEO_DOOM_PROGRAM_NAME, simulate_video_pio_video_doom);
-#endif
-    scanvideo_setup(&VGA_MODE);
-//    sem_release(&init_sem);
-#if PICO_ON_DEVICE
-    irq_set_exclusive_handler(LOW_PRIO_IRQ, fill_scanlines);
-    irq_set_enabled(LOW_PRIO_IRQ, true);
-    scanvideo_set_scanline_release_fn(free_buffer_callback);
-#endif
-    scanvideo_timing_enable(true);
-#if PICO_ON_DEVICE
-    irq_set_pending(LOW_PRIO_IRQ);
-#endif
     sem_release(&core1_launch);
     while (true) {
         pd_core1_loop();
 #if PICO_ON_DEVICE
         tight_loop_contents();
-#else
-        fill_scanlines();
 #endif
+    fill_scanlines();
     }
 }
 
@@ -1120,6 +945,9 @@ static void core1() {
 #endif
 void I_InitGraphics(void)
 {
+
+    I_initScreen();
+
     stbar = resolve_vpatch_handle(VPATCH_STBAR);
     sem_init(&render_frame_ready, 0, 2);
     sem_init(&display_frame_freed, 1, 2);
@@ -1206,7 +1034,7 @@ void I_Endoom(byte *endoom_data) {
     assert(size >=TEXT_SCANLINE_BUFFER_TOTAL_WORDS * 4 + 80*25*2 + 4096);
     text_screen_cpy = wa;
     text_font_cpy = text_screen_cpy + 80 * 25 * 2;
-    text_scanline_buffer_start = (uint32_t *) (text_font_cpy + 4096);
+    text_scanline_buffer_start = (uint16_t *) (text_font_cpy + 4096 * 2); // BOB I changed this from 32 to 16 and mul'ed the 4096 by 2
 #if 0
     static_assert(sizeof(normal_font_data) == 4096, "");
     memcpy(text_font_cpy, normal_font_data, sizeof(normal_font_data));
@@ -1385,136 +1213,5 @@ void I_CheckIsScreensaver(void)
 void I_DisplayFPSDots(boolean dots_on)
 {
 }
-
-#if PICO_ON_DEVICE
-bool video_doom_adapt_for_mode(const struct scanvideo_pio_program *program, const struct scanvideo_mode *mode,
-                               struct scanvideo_scanline_buffer *missing_scanvideo_scanline_buffer, uint16_t *modifiable_instructions) {
-    missing_scanvideo_scanline_buffer->data = missing_scanline_data;
-    missing_scanvideo_scanline_buffer->data_used = missing_scanvideo_scanline_buffer->data_max = sizeof(missing_scanline_data) / 4;
-    return true;
-}
-
-pio_sm_config video_doom_configure_pio(pio_hw_t *pio, uint sm, uint offset) {
-    pio_sm_config config = video_24mhz_composable_default_program_get_default_config(offset);
-    scanvideo_default_configure_pio(pio, sm, offset, &config, false);
-    return config;
-}
-#else
-void simulate_video_pio_video_doom(const uint32_t *dma_data, uint32_t dma_data_size,
-                                   uint16_t *pixel_buffer, int32_t max_pixels, int32_t expected_width, bool overlay) {
-    const uint16_t *it = (uint16_t *) dma_data;
-    assert(!(3u & (uintptr_t) dma_data));
-    const uint16_t *const __unused dma_data_end = (uint16_t *) (dma_data + dma_data_size);
-    const uint16_t *const pixels_end = (uint16_t *) (pixel_buffer + max_pixels);
-    uint16_t *pixels = pixel_buffer;
-    bool __unused ok = false;
-    bool done = false;
-    bool __unused last_was_black = true; // in case no pixels
-    const uint16_t display_enable_bit = PICO_SCANVIDEO_ALPHA_MASK; // for now
-    do {
-        uint16_t cmd = *it++;
-        switch (cmd) {
-            case video_doom_offset_nop_raw:
-                break;
-            case video_doom_offset_end_of_scanline_skip_ALIGN:
-                it++;
-                // fall thru
-            case video_doom_offset_end_of_scanline_ALIGN:
-                done = ok = true;
-                break;
-            case video_doom_offset_raw_run_half: {
-                assert(pixels < pixels_end);
-                uint16_t c = *it++;
-                if (!overlay || (c & display_enable_bit))
-                    *pixels++ = c;
-                else
-                    pixels++;
-                uint16_t len = *it++;
-                for (int i = 0; i < len + 2; i++) {
-                    assert(pixels < pixels_end);
-                    c = *it++;
-                    if (!overlay || (c & display_enable_bit))
-                        *pixels++ = c;
-                    else
-                        pixels++;
-                }
-                last_was_black = !c;
-                break;
-            }
-            case video_doom_offset_raw_1p_half: {
-                uint16_t c;
-                if (pixels == pixels_end) {
-                    c = *it++;
-                    assert(!c); // must end with black
-                } else {
-                    assert(pixels < pixels_end);
-                    c = *it++;
-                    if (!overlay || (c & display_enable_bit))
-                        *pixels++ = c;
-                    else
-                        pixels++;
-                }
-                last_was_black = !c;
-                break;
-            }
-            case video_doom_offset_raw_run: {
-                assert(pixels < pixels_end);
-                uint16_t c = *it++;
-                if (!overlay || (c & display_enable_bit))
-                    *pixels++ = c, *pixels++ = c;
-                else
-                    pixels+=2;
-                uint16_t len = *it++;
-                for (int i = 0; i < len + 2; i++) {
-                    assert(pixels < pixels_end);
-                    c = *it++;
-                    if (!overlay || (c & display_enable_bit))
-                        *pixels++ = c, *pixels++ = c;
-                    else
-                        pixels+=2;
-                }
-                last_was_black = !c;
-                break;
-            }
-            case video_doom_offset_raw_1p: {
-                uint16_t c;
-                if (pixels == pixels_end) {
-                    c = *it++;
-                    assert(!c); // must end with black
-                } else {
-                    assert(pixels < pixels_end);
-                    c = *it++;
-                    if (!overlay || (c & display_enable_bit))
-                        *pixels++ = c, *pixels++ = c;
-                    else
-                        pixels += 2;
-                }
-                last_was_black = !c;
-                break;
-            }
-            default:
-                assert(cmd < 32);
-                assert(false);
-                done = true;
-        }
-    } while (!done);
-    assert(ok);
-    assert(it == dma_data_end);
-    assert(!(3u & (uintptr_t) (it))); // should end on dword boundary
-#if 0
-    // should probably have this back ignored for now because of overlays which don't bother
-    if (!overlay) {
-        assert(!expected_width || pixels == pixel_buffer +
-                                            expected_width); // with the correct number of pixels (one more because we stick a black pixel on the end)
-    }
-#else
-    if (expected_width && pixels < pixel_buffer + expected_width) {
-        // black out rest of line
-        if (!overlay) memset(pixels, 0, (expected_width - (pixels - pixel_buffer)) * sizeof(uint16_t));
-    }
-#endif
-    assert(last_was_black);
-}
-#endif
 
 #endif

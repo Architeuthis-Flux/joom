@@ -3,12 +3,21 @@ target_sources(common_pico INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/i_glob.c
         ${CMAKE_CURRENT_LIST_DIR}/i_input.c
         ${CMAKE_CURRENT_LIST_DIR}/i_system.c
-        ${CMAKE_CURRENT_LIST_DIR}/piconet.c
+        $<$<BOOL:${USE_PICO_NET}>:${CMAKE_CURRENT_LIST_DIR}/piconet.c>
+        
         ${CMAKE_CURRENT_LIST_DIR}/i_timer.c
         ${CMAKE_CURRENT_LIST_DIR}/i_video.c
         ${CMAKE_CURRENT_LIST_DIR}/stubs.c
 
         ${CMAKE_CURRENT_LIST_DIR}/i_picosound.c
+
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/shared.c
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screen.c
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/lilygo_ttgo.c
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/st7789_240_135.c
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/ssd1306_70_40.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/ssd1306_70_40_i2c.c
+        ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/st7735_128_128.c
 )
 if (PICO_ON_DEVICE)
     target_sources(common_pico INTERFACE
@@ -38,7 +47,6 @@ target_compile_definitions(common_pico INTERFACE
         PICO_USE_STACK_GUARDS=0 # todo we can actually use these sensibly, but right now we do overflow!
 )
 
-pico_generate_pio_header(common_pico ${CMAKE_CURRENT_LIST_DIR}/video_doom.pio)
 target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi)
 
 add_library(pico_cd INTERFACE)

@@ -8,6 +8,12 @@ endif()
 
 add_subdirectory(adpcm-xq)
 
+# screens
+add_subdirectory(pico_st7789)
+add_subdirectory(pico_ssd1306)
+add_subdirectory(pico_ssd1306_i2c)
+add_subdirectory(hagl_hal)
+
 foreach(SUBDIR ${BINARIES})
     add_subdirectory("${SUBDIR}")
 endforeach()
@@ -29,6 +35,7 @@ target_sources(common INTERFACE
     m_misc.c             m_misc.h)
 
 target_compile_definitions(common INTERFACE
+        PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
         #HACK_FINALE_E1M1=1
         #HACK_FINALE_SHAREWARE=1
 #        DEBUG_MOBJ=1
@@ -342,7 +349,7 @@ target_compile_definitions(small_doom_common INTERFACE
         USE_LIGHTMAP_INDEXES=1 # saves about 9K
 
         #FRACBITS=15 # ha ha doesn't seem to be passed thru everywhere!
-        #NO_USE_ENDDOOM=1
+        NO_USE_ENDDOOM=1
         #NO_DRAW_VISPLANES=1
 
         USE_ERASE_FRAME=1 #
@@ -469,7 +476,7 @@ if (TARGET chocolate-doom)
     )
 endif()
 
-function(add_doom_tiny SUFFIX RENDER_LIB)
+function(add_doom_tiny SUFFIX SCREEN)
     add_executable(doom_tiny${SUFFIX})
     target_link_libraries(doom_tiny${SUFFIX} PRIVATE game)
 
@@ -480,8 +487,10 @@ function(add_doom_tiny SUFFIX RENDER_LIB)
             )
     target_include_directories(doom_tiny${SUFFIX} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
     target_link_libraries(doom_tiny${SUFFIX} PRIVATE doom ${EXTRA_LIBS})
-
     target_link_libraries(doom_tiny${SUFFIX} PRIVATE small_doom_common)
+
+    # pico_enable_stdio_usb(doom_tiny${SUFFIX} 0)
+    # pico_enable_stdio_uart(doom_tiny${SUFFIX} 1)
 
     if (PICO_SDK)
         pico_set_float_implementation(doom_tiny${SUFFIX} none)
@@ -493,6 +502,14 @@ function(add_doom_tiny SUFFIX RENDER_LIB)
             -Wno-format-truncation)
     target_compile_definitions(doom_tiny${SUFFIX} PRIVATE
         DOOM_TINY=1
+
+        # LILYGO_TTGO=1
+        # ST7789_240_135=1
+        # SSD1306_70_40=1
+        # SSD1306_70_40_i2c=1
+        ${SCREEN}=1
+        
+        SUPPORT_OVERLAYS=1
         EMU8950_SLOT_RENDER=1
 
         SHRINK_MOBJ=1 # may break saved games
@@ -510,11 +527,11 @@ function(add_doom_tiny SUFFIX RENDER_LIB)
         USE_DIRECT_MIDI_LUMP=1
 
         NO_USE_NET=1 # standard networking
-        USE_PICO_NET=1
+        USE_PICO_NET=0
         # for vgaboard
-        PICO_DEFAULT_I2C=1
-        PICO_DEFAULT_I2C_SDA_PIN=18
-        PICO_DEFAULT_I2C_SCL_PIN=19
+        # PICO_DEFAULT_I2C=1
+        # PICO_DEFAULT_I2C_SDA_PIN=18
+        # PICO_DEFAULT_I2C_SCL_PIN=19
 
         #NO_USE_LOAD=1
         #NO_USE_SAVE=1
@@ -571,16 +588,21 @@ function(add_doom_tiny SUFFIX RENDER_LIB)
         NO_IERROR=1
     )
     if (PICO_ON_DEVICE)
+        # target_link_libraries(doom_tiny${SUFFIX} PRIVATE hardware_spi)
+        # TODO use defs or targets for these?
+        target_link_libraries(doom_tiny${SUFFIX} PRIVATE pico_st7789 hardware_spi)
+        target_link_libraries(doom_tiny${SUFFIX} PRIVATE pico_ssd1306)
+        target_link_libraries(doom_tiny${SUFFIX} PRIVATE pico_ssd1306_i2c hardware_i2c)
+        target_link_libraries(doom_tiny${SUFFIX} PRIVATE hagl_hal hardware_spi)
         target_compile_options(doom_tiny${SUFFIX} PRIVATE -fno-common -fdata-sections -Wl,--sort-section=alignment)
         target_compile_definitions(doom_tiny${SUFFIX} PRIVATE
                 NO_ZONE_DEBUG=1
                 )
-        #target_link_libraries(doom_tiny${SUFFIX} PRIVATE hardware_flash)
     endif()
     if (FORCE_DEBUG)
         target_compile_options(doom_tiny${SUFFIX} PRIVATE -g)
     endif()
-    target_link_libraries(doom_tiny${SUFFIX} PRIVATE ${RENDER_LIB})
+    target_link_libraries(doom_tiny${SUFFIX} PRIVATE render_newhope)
     set(PICO_HACK 0)
     set(STAMP_HACK 0)
     if (PICO_HACK)
@@ -627,39 +649,109 @@ else()
 endif()
 
 if (PICO_SDK)
-    add_doom_tiny("" render_newhope)
     add_library(tiny_settings INTERFACE)
     target_compile_definitions(tiny_settings INTERFACE
-            WHD_SUPER_TINY=1
-            DEMO1_ONLY=1
-            NO_USE_FINALE_CAST=1
-            NO_USE_FINALE_BUNNY=1
+        WHD_SUPER_TINY=1
+        DEMO1_ONLY=1
+        NO_USE_FINALE_CAST=1
+        NO_USE_FINALE_BUNNY=1
     )
-    target_compile_definitions(doom_tiny PRIVATE
-            TINY_WAD_ADDR=0x10040000
-    )
-    target_link_libraries(doom_tiny PRIVATE tiny_settings)
-    add_doom_tiny(_nost render_newhope)
-
-    target_compile_definitions(doom_tiny_nost PRIVATE
-            # NO_USE_FINALE_CAST=1 # note this is only used by doom II but doesnt take that much more space
-            TINY_WAD_ADDR=0x10048000
-            )
-    if (PICO_ON_DEVICE)
-        suppress_tinyusb_warnings()
-        add_doom_tiny(_usb render_newhope)
-        target_link_libraries(doom_tiny_usb PRIVATE tiny_settings pico_cd)
-        target_compile_definitions(doom_tiny_usb PRIVATE
-                USB_SUPPORT=1
-                TINY_WAD_ADDR=0x10042000 # ugh tinyusb is >8K currently!!
-        )
-        add_doom_tiny(_nost_usb render_newhope)
-        target_link_libraries(doom_tiny_nost_usb PRIVATE pico_cd)
-        target_compile_definitions(doom_tiny_nost_usb PRIVATE
-                USB_SUPPORT=1
-                TINY_WAD_ADDR=0x10048000
-                )
-    endif()
 endif()
 
+function(add_doom_tiny_screen SCREEN)
+    if (PICO_SDK)
+        # add_doom_tiny(_${SCREEN} ${SCREEN})
+
+        # target_compile_definitions(doom_tiny_${SCREEN} PRIVATE
+        #         TINY_WAD_ADDR=0x10040000
+        # )
+        # target_link_libraries(doom_tiny_${SCREEN} PRIVATE tiny_settings)
+
+        # disabled because I don't need it, probably still works...
+        # add_doom_tiny(_nost_${SCREEN} ${SCREEN})
+
+        # target_compile_definitions(doom_tiny_nost_${SCREEN} PRIVATE
+        #         # NO_USE_FINALE_CAST=1 # note this is only used by doom II but doesnt take that much more space
+        #         TINY_WAD_ADDR=0x10048000
+        #         )
+        if (PICO_ON_DEVICE)
+            suppress_tinyusb_warnings()
+            add_doom_tiny(_usb_${SCREEN} ${SCREEN})
+            target_link_libraries(doom_tiny_usb_${SCREEN} PRIVATE tiny_settings pico_cd)
+            target_compile_definitions(doom_tiny_usb_${SCREEN} PRIVATE 
+                    USB_SUPPORT=1
+                    TINY_WAD_ADDR=0x10042000 # ugh tinyusb is >8K currently!!
+            )
+            # disabled for same reason as above
+            # add_doom_tiny(_nost_usb_${SCREEN} ${SCREEN})
+            # target_link_libraries(doom_tiny_nost_usb_${SCREEN} PRIVATE pico_cd)
+            # target_compile_definitions(doom_tiny_nost_usb_${SCREEN} PRIVATE
+            #         USB_SUPPORT=1
+            #         TINY_WAD_ADDR=0x10048000
+            #         )
+        endif()
+    endif()
+endfunction()
+
+
+
+
+add_doom_tiny_screen("SSD1306_70_40")
+target_compile_definitions(doom_tiny_usb_SSD1306_70_40 PRIVATE
+    DOWNSAMPLING_FACTOR_OUT_OF_100=500
+)
+
+add_doom_tiny_screen("SSD1306_70_40_i2c")
+target_compile_definitions(doom_tiny_usb_SSD1306_70_40_i2c PRIVATE
+    DOWNSAMPLING_FACTOR_OUT_OF_100=500
+)
+
+add_doom_tiny_screen("LILYGO_TTGO")
+target_compile_definitions(doom_tiny_usb_LILYGO_TTGO PRIVATE
+    DOWNSAMPLING_FACTOR_OUT_OF_100=148
+)
+
+add_doom_tiny_screen("ST7789_240_135")
+target_compile_definitions(doom_tiny_usb_ST7789_240_135 PRIVATE
+    DOWNSAMPLING_FACTOR_OUT_OF_100=148
+)
+
+add_doom_tiny_screen("ST7735_128_128")
+target_compile_definitions(doom_tiny_usb_ST7735_128_128 PRIVATE
+    DOWNSAMPLING_FACTOR_OUT_OF_100=250
+
+    # hagl-hal stuff
+    
+    HAGL_HAL_USE_SINGLE_BUFFER
+    # MIPI_DISPLAY_INVERT=1
+
+
+    # screen-specific
+
+    MIPI_DISPLAY_PIN_DC=1
+    MIPI_DISPLAY_PIN_CS=5
+    MIPI_DISPLAY_PIN_CLK=2
+    MIPI_DISPLAY_PIN_MOSI=3
+    MIPI_DISPLAY_PIN_RST=0
+    MIPI_DISPLAY_PIN_BL=22
+    MIPI_DISPLAY_PIN_MISO=-1
+
+    MIPI_DISPLAY_SPI_PORT=spi0
+    MIPI_DISPLAY_SPI_CLOCK_SPEED_HZ=62500000
+    MIPI_DISPLAY_PIXEL_FORMAT=MIPI_DCS_PIXEL_FORMAT_16BIT
+
+    # MIPI_DISPLAY_ADDRESS_MODE=MIPI_DCS_ADDRESS_MODE_BGR|MIPI_DCS_ADDRESS_MODE_MIRROR_Y|MIPI_DCS_ADDRESS_MODE_MIRROR_X
+    MIPI_DISPLAY_ADDRESS_MODE=MIPI_DCS_ADDRESS_MODE_BGR|MIPI_DCS_ADDRESS_MODE_SWAP_XY|MIPI_DCS_ADDRESS_MODE_MIRROR_Y
+    MIPI_DISPLAY_WIDTH=160
+    MIPI_DISPLAY_HEIGHT=80
+    MIPI_DISPLAY_OFFSET_X=0
+    MIPI_DISPLAY_OFFSET_Y=26
+
+    # MIPI_DISPLAY_WIDTH=128
+    # MIPI_DISPLAY_HEIGHT=128
+    # MIPI_DISPLAY_OFFSET_X=2
+    # MIPI_DISPLAY_OFFSET_Y=2
+
+    MIPI_DISPLAY_INVERT=1
+)
 

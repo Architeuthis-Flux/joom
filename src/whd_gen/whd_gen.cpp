@@ -24,6 +24,8 @@
 #include <vector>
 #include "musx_decoder.h"
 #include "image_decoder.h"
+#include <limits>
+
 
 //#define USE_PIXELS_ONLY_PATCH 1 // dont use c3 on patches
 #define USE_PIXELS_ONLY_FLAT 1 // dont use c3 on flats
