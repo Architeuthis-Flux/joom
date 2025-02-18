@@ -490,9 +490,9 @@ void __attribute((noreturn)) I_Quit (void)
     while (true) {
 //#if PICO_ON_DEVICE
         // no idea why the default timeout of 50 ms is NOT working here, hack hack hack away!
-        I_GetEventTimeout(1000);
+        //I_GetEventTimeout(1000);
 //#if USB_SUPPORT
-        tuh_task();
+       // tud_task();
 //#endif
 //#endif
         I_UpdateSound();

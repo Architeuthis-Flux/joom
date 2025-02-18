@@ -1,0 +1,10 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/pico-sdk/src/rp2350/boot_stage2/bs2_default_padded_checksummed.S
+

@@ -1,6 +1,13 @@
 add_library(doom INTERFACE)
 cmake_policy(SET CMP0076 NEW)
+# set(SKIP_PICO_STDIO_USB 1)
+
+pico_sdk_init()
+
 target_sources(doom INTERFACE
+
+# usb_descriptors.c  
+# board_api.h
             am_map.c        am_map.h
             deh_ammo.c
             deh_bexstr.c
@@ -70,11 +77,19 @@ target_sources(doom INTERFACE
             statdump.c      statdump.h
             st_lib.c        st_lib.h
             st_stuff.c      st_stuff.h
-            wi_stuff.c      wi_stuff.h)
+            wi_stuff.c      wi_stuff.h
+)
 
-target_include_directories(doom INTERFACE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
+target_include_directories(doom INTERFACE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../"
+${PICO_SDK_PATH}/src/rp2_common/pico_stdio_usb/include
+${CMAKE_CURRENT_LIST_DIR}
+)
+
 if (NOT PICO_SDK)
     target_link_libraries(doom INTERFACE SDL2::SDL2 SDL2::mixer SDL2::net)
 else()
-    target_link_libraries(doom INTERFACE pico_stdlib pico_multicore)
+    target_link_libraries(doom INTERFACE pico_stdlib pico_multicore tinyusb_device tinyusb_board pico_unique_id)
+        # pico_add_extra_outputs(doom)
+        pico_enable_stdio_usb(doom 1)
+        pico_enable_stdio_uart(doom 0)
 endif()

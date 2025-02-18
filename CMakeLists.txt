@@ -1,3 +1,19 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.1.0)
+set(toolchainVersion 13_3_Rel1)
+set(picotoolVersion 2.1.0)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+set(PICO_BOARD pico CACHE STRING "Board type")
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 cmake_minimum_required(VERSION 3.13)
@@ -8,13 +24,13 @@ if (PICO_SDK_PATH)
     include(pico_extras_import.cmake)
 endif()
 
-project("Chocolate Doom" VERSION 3.0.0 LANGUAGES C CXX)
+project("Chocolate Doom" VERSION 3.0.0 LANGUAGES C CXX ASM)
 enable_language(CXX)
 set(CMAKE_CXX_STANDARD 14)
 
 if (PICO_SDK_PATH)
     # we are using git@github.com:liamfraser/tinyusb.git as it has some RP2040 fixes that aren't upstreamed yet
-    #set(PICO_TINYUSB_PATH ${CMAKE_CURRENT_LIST_DIR}/3rdparty/tinyusb)
+    set(PICO_TINYUSB_PATH ${CMAKE_CURRENT_LIST_DIR}/3rdparty/tinyusb)
     # this only affects device builds device, but we want to use zone for malloc in this case so we don't have two separate elastic spaces and can fit more in
     set(SKIP_PICO_MALLOC 1)
     pico_sdk_init()
@@ -53,9 +69,9 @@ endif()
 
 # Note PICO_SDK path is set by the SDK initialization if it occurs above
 if (NOT PICO_SDK)
-    find_package(SDL2 2.0.1 REQUIRED)
-    find_package(SDL2_mixer 2.0.0 REQUIRED)
-    find_package(SDL2_net 2.0.0 REQUIRED)
+    # find_package(SDL2 2.0.1 REQUIRED)
+    # find_package(SDL2_mixer 2.0.0 REQUIRED)
+    # find_package(SDL2_net 2.0.0 REQUIRED)
 
     # Check for libsamplerate.
     find_package(samplerate)

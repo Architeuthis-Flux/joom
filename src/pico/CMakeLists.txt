@@ -1,4 +1,8 @@
+
+
+set(SKIP_PICO_STDIO_USB 1)
 add_library(common_pico INTERFACE)
+
 target_sources(common_pico INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/i_glob.c
         ${CMAKE_CURRENT_LIST_DIR}/i_input.c
@@ -19,6 +23,8 @@ target_sources(common_pico INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/ssd1306_70_40_i2c.c
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/st7735_128_128.c
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/jumperless_v5.c
+        ${CMAKE_CURRENT_LIST_DIR}/usb_descriptors.c
+ ${CMAKE_CURRENT_LIST_DIR}/stdio_usb.c
 )
 if (PICO_ON_DEVICE)
     target_sources(common_pico INTERFACE
@@ -41,6 +47,14 @@ target_include_directories(common_pico INTERFACE
         )
 
 target_compile_definitions(common_pico INTERFACE
+ TUSB_OPT_DEVICE_ENABLED=1
+PICO_RP2040_USB_DEVICE_ENUMERATION_FIX=1
+PICO_RP2040_USB_DEVICE_UFRAME_FIX=1
+ PICO_RP2350=1
+ CFG_TUSB_CONFIG_FILE="tusb_config2.h"
+# PICO_STDIO_USB_LOW_PRIORITY_IRQ=1
+
+#   CFG_TUD_CDC=3
         NO_USE_MOUSE=1
         PICO_AUDIO_I2S_PIO=1
         PICO_AUDIO_I2S_DMA_IRQ=1
@@ -48,9 +62,33 @@ target_compile_definitions(common_pico INTERFACE
         PICO_USE_STACK_GUARDS=0 # todo we can actually use these sensibly, but right now we do overflow!
 )
 
-target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi)
+target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi tinyusb_device)
 
 add_library(pico_cd INTERFACE)
+
+target_compile_definitions(pico_cd INTERFACE
+#  TUSB_OPT_DEVICE_ENABLED=1
+#  CFG_TUD_CDC=6
+# TUSB_OPT_HOST_ENABLED=1
+
+)
+
+
 # if (TARGET tinyusb_host)
-    target_link_libraries(pico_cd INTERFACE tinyusb_host)
-# endif()
+#     target_link_libraries(pico_cd INTERFACE tinyusb_device)
+#  endif()
+pico_enable_stdio_usb(common_pico 1)
+pico_enable_stdio_uart(common_pico 0)
+pico_enable_stdio_usb(pico_cd 1)
+pico_enable_stdio_uart(pico_cd 0)
+
+#  set(PROJECT hello)
+# cmake_minimum_required(VERSION 3.12)
+# include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+# project(${PROJECT} C CXX)
+# pico_sdk_init()
+# add_executable(${PROJECT} i_input.c)
+# target_link_libraries(${PROJECT} pico_stdlib)
+# pico_add_extra_outputs(${PROJECT})
+# pico_enable_stdio_usb(${PROJECT} 1)
+# pico_enable_stdio_uart(${PROJECT} 0)

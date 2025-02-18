@@ -7,7 +7,7 @@ aclocal.m4
 autom4te.cache
 autotools
 bin
-# /config.h
+/config.h
 config.hin
 config.log
 config.status
@@ -28,7 +28,7 @@ DOOM*.pcx
 HTIC*.pcx
 HEXEN*.pcx
 STRIFE*.pcx
-# build/*
+build/*
 
 # These are the default patterns globally ignored by Subversion:
 *.o
@@ -46,7 +46,11 @@ STRIFE*.pcx
 .#*
 .*.swp
 .DS_store
-
+*.cmake
+*.marks
+*.make
+*.o*
+*.ts
 # Ignore GNU Global tags and html files
 GPATH
 GRTAGS
@@ -56,7 +60,7 @@ GTAGS
 # *.midx.z
 # *.wad
 # *.whd
-# /cmake-*/
+/cmake-*/
 
 # host-build/*
 # 3rdparty/*

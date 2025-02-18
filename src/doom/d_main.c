@@ -495,7 +495,7 @@ void D_RunFrame()
 
     TryRunTics (); // will run at least one tic
 
-    S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
+    //S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
     // Update display, next frame, with current state if no profiling is on
     if (screenvisible && !nodrawers)
@@ -545,21 +545,23 @@ void D_DoomLoop (void)
 #if !NO_USE_MOUSE
     I_SetGrabMouseCallback(D_GrabMouseCallback);
 #endif
-    I_InitGraphics();
-#if USB_SUPPORT
-    printf("Sleeping 2s for USB devices\n"); // TinyUSB still grinds to a halt during connect/disconnect
-    absolute_time_t end_time = make_timeout_time_ms(2000);
-    do {
-        tuh_task();
-    } while (!time_reached(end_time));
-#endif
-    EnableLoadingDisk();
+
+// #if USB_SUPPORT
+//     printf("Sleeping 2s for USB devices\n"); // TinyUSB still grinds to a halt during connect/disconnect
+//     absolute_time_t end_time = make_timeout_time_ms(2000);
+//     do {
+//         tud_task();
+//     } while (!time_reached(end_time));
+// #endif
+    //EnableLoadingDisk();
 
     TryRunTics();
 
     V_RestoreBuffer();
     R_ExecuteSetViewSize();
 
+    I_InitGraphics();
+    
     D_StartGameLoop();
 
     if (testcontrols)
@@ -1591,7 +1593,7 @@ void D_DoomMain (void)
     gamemission = IdentifyIWADByName(whdheader->name);
 #endif
 
-    gpio_put(PICO_DEFAULT_LED_PIN, 0);
+   // gpio_put(PICO_DEFAULT_LED_PIN, 0);
 
     // Now that we've loaded the IWAD, we can figure out what gamemission
     // we're playing and which version of Vanilla Doom we need to emulate.

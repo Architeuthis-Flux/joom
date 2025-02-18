@@ -33,8 +33,8 @@ static void* ssd1306_70_40;
 
 
 void I_initScreen(void) {
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+    // gpio_init(PICO_DEFAULT_LED_PIN);
+    // gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
 #if ST7789_240_135
     st7789_240_135_initScreen();
@@ -96,5 +96,5 @@ void I_handleFrameEnd(uint8_t frame) {
 #elif JUMPERLESS_V5
     jumperless_handleFrameEnd(frame);
 #endif
-    gpio_put(PICO_DEFAULT_LED_PIN, 1);
+    // gpio_put(PICO_DEFAULT_LED_PIN, 1);
 }

@@ -36,7 +36,7 @@ target_sources(common INTERFACE
     m_misc.c             m_misc.h)
 
 target_compile_definitions(common INTERFACE
-        PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
+        # PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
         #HACK_FINALE_E1M1=1
         #HACK_FINALE_SHAREWARE=1
 #        DEBUG_MOBJ=1
@@ -333,7 +333,7 @@ target_compile_definitions(small_doom_common INTERFACE
         DOOM_CONST=1 # thread const thru lots of places
 
         SOUND_LOW_PASS=1
-        NUM_SOUND_CHANNELS=8 # sounds ok (actually that is how many are used by default)
+        NUM_SOUND_CHANNELS=4 # sounds ok (actually that is how many are used by default)
 
         # functionality
         NO_USE_CHECKSUM=1
@@ -490,8 +490,8 @@ function(add_doom_tiny SUFFIX SCREEN)
     target_link_libraries(doom_tiny${SUFFIX} PRIVATE doom ${EXTRA_LIBS})
     target_link_libraries(doom_tiny${SUFFIX} PRIVATE small_doom_common)
 
-    # pico_enable_stdio_usb(doom_tiny${SUFFIX} 0)
-    # pico_enable_stdio_uart(doom_tiny${SUFFIX} 1)
+    pico_enable_stdio_usb(doom_tiny${SUFFIX} 0)
+    pico_enable_stdio_uart(doom_tiny${SUFFIX} 1)
 
     if (PICO_SDK)
         pico_set_float_implementation(doom_tiny${SUFFIX} none)
@@ -509,7 +509,7 @@ function(add_doom_tiny SUFFIX SCREEN)
         # SSD1306_70_40=1
         # SSD1306_70_40_i2c=1
         ${SCREEN}=1
-        
+         TUSB_OPT_DEVICE_ENABLED=1
         SUPPORT_OVERLAYS=1
         EMU8950_SLOT_RENDER=1
 
@@ -518,10 +518,10 @@ function(add_doom_tiny SUFFIX SCREEN)
 
         #NO_DRAW_MENU=1
         # SDK minimilization
-        PICO_TIME_DEFAULT_ALARM_POOL_DISABLED=1
-        PICO_TIME_DEFAULT_ALARM_POOL_MAX_TIMERS=1
+        # PICO_TIME_DEFAULT_ALARM_POOL_DISABLED=1
+        PICO_TIME_DEFAULT_ALARM_POOL_MAX_TIMERS=4
         PICO_DISABLE_SHARED_IRQ_HANDLERS=1
-        PICO_USE_OPTIMISTIC_SBRK=1
+        # PICO_USE_OPTIMISTIC_SBRK=1
 
         # MUSIC
         USE_EMU8950_OPL=1
@@ -581,9 +581,10 @@ function(add_doom_tiny SUFFIX SCREEN)
     target_compile_definitions(doom_tiny${SUFFIX} PRIVATE
         #FORCE_NODRAW=1
         USE_MEMORY_WAD=1
-        PICO_DEBUG_MALLOC=1
+        # PICO_DEBUG_MALLOC=1
         EMU8950_NO_RATECONV=1
-
+     TUSB_OPT_DEVICE_ENABLED=1
+        # PICO_BUILD=1
         PICO_CORE1_STACK_SIZE=0x4f8
 
         NO_IERROR=1
@@ -611,7 +612,7 @@ function(add_doom_tiny SUFFIX SCREEN)
         target_compile_definitions(doom_tiny${SUFFIX} PRIVATE
                 PICO_AUDIO_I2S_DATA_PIN=20
                 PICO_AUDIO_I2S_CLOCK_PIN_BASE=21
-                # //NO_USE_UART=1
+                NO_USE_UART=1
                 )
         pico_enable_stdio_uart(doom_tiny${SUFFIX} 0)
     elseif(STAMP_HACK)
@@ -621,7 +622,7 @@ function(add_doom_tiny SUFFIX SCREEN)
                 NO_USE_UART=1
                 INCREASE_I2S_DRIVE_STRENGTH=1
         )
-        pico_enable_stdio_uart(doom_tiny${SUFFIX} 0)
+        # pico_enable_stdio_uart(doom_tiny${SUFFIX} 0)
     endif()
 endfunction()
 
@@ -677,12 +678,12 @@ function(add_doom_tiny_screen SCREEN)
         #         TINY_WAD_ADDR=0x10048000
         #         )
         if (PICO_ON_DEVICE)
-            suppress_tinyusb_warnings()
+            # suppress_tinyusb_warnings()
             add_doom_tiny(_usb_${SCREEN} ${SCREEN})
             target_link_libraries(doom_tiny_usb_${SCREEN} PRIVATE tiny_settings pico_cd)
             target_compile_definitions(doom_tiny_usb_${SCREEN} PRIVATE 
                     USB_SUPPORT=1
-                    TINY_WAD_ADDR=0x10042000 # ugh tinyusb is >8K currently!!
+                    TINY_WAD_ADDR=0x10048000 # ugh tinyusb is >8K currently!!
             )
             # disabled for same reason as above
             # add_doom_tiny(_nost_usb_${SCREEN} ${SCREEN})
@@ -698,7 +699,7 @@ endfunction()
 
 add_doom_tiny_screen("jumperless_v5")
 target_compile_definitions(doom_tiny_usb_jumperless_v5 PRIVATE
-    DOWNSAMPLING_FACTOR_OUT_OF_100=1000
+    DOWNSAMPLING_FACTOR_OUT_OF_100=300
 )
 
 add_doom_tiny_screen("SSD1306_70_40")
