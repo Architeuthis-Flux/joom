@@ -522,7 +522,7 @@ void I_InputInit(void) {
      //tud_init(0);
 
     //  tud_init(1);
-    stdio_usb_init();
+   // stdio_usb_init();
 
     // tud_task();
     // if(tud_task_event_ready()){

@@ -1,4 +1,5 @@
 #include "pico/pico-screens/screens/jumperless_v5.h"
+#include "pico/pico-screens/screens/shared.h"
 #include "pico_jumperless_matrix.h"
 #include "pico-screens/screens/shared.h"
 #include "ws2812.pio.h"
@@ -11,12 +12,14 @@
 #include "pico/stdlib.h"
 #include "pico/time.h" 
 // #include "pico/usb_device.h"
-#include "tusb.h"
+//#include "tusb.h"
 // #include "board_api.h"
-
+//#include "shared.h"
 #define IS_RGBW false
 #define WS2812_PIN 17
 #define NUM_PIXELS 445
+
+#include "d_main.h"
 
 // #define WS2812_PIN_1 17
 // #define NUM_PIXELS_1 300
@@ -27,6 +30,8 @@
 
 void jumperless_clearScreen(void);
 
+
+
 PIO pio;
 uint sm;
 uint offset;
@@ -36,66 +41,85 @@ uint offset;
 #error Attempting to use a pin>=32 on a platform that does not support it
 #endif
 
-static inline void put_pixel(PIO pio, uint sm, uint32_t pixel_grb, int dim) {
+static inline void put_pixel(PIO pio, uint sm, uint16_t pixel, int dim) {
 
     //pixel_grb &= 0x002f1f1f;
-    //pixel_grb <<= 8u;
-    uint8_t g = (pixel_grb & 0xffff0000) >> 16;
-    uint8_t r = (pixel_grb & 0x0000ff00) >> 8;
-    uint8_t b = (pixel_grb & 0x000000ff);
+    // pixel_grb <<= 8u;
+    uint8_t r = (pixel & 0b1111100000000000) >> 11;
+    uint8_t g = (pixel & 0b0000011111100000) >> 6;
+    uint8_t b = (pixel & 0b0000000000011111) << 0;
+
+    // uint8_t r = ((downsampled_pixel & 0b1111100000000000) >> 11) ;
+    // uint8_t g = ((downsampled_pixel & 0b0000011111100000) >> 5) ;
+    // uint8_t b = ( downsampled_pixel & 0b0000000000011111);
+
+    uint32_t averaged_pixel;
+    // averaged_pixel  =   (b)        & 0b0000000000011111;
+    // averaged_pixel |= (((g) << 5)  & 0b0000011111100000);
+    // averaged_pixel |= (((r) << 11) & 0b1111100000000000);
+
 
     if (dim == 1) {
-        if (r < 0x5a && g < 0x5a && b < 0x5a) {
-            r = 0x00;
-            g = 0x00;
-            b = 0x00;
-            }
+        r = r >> 1;
+        g = g >> 1;
+        b = b >>   1;
+    }
+        //  if (r < 0x05 && r > 0) {
+        //     r -= 0x01;
+        // }
+        // if (g < 0x05 && g > 0) {
+        //     g -= 0x01;
+        // }
+        // if (b < 0x05 && b > 0) {
+        //     b -= 0x01;
+        //  }
 
-        if (r < 0x6a && b < 0x6a) {
-            r = 0x00;
-            b = 0x00;
-            }
-        if (r < 0x36) {
-            r = 0x00;
-            }
-        //g = g*32;
+         r = r*r;
+         g = g*g;   
+        b = b*b;
+        
+        // r = r >> 1;
+        // g = g >> 1;
+        // b = b >> 1;
+if (dim == 1) {
+        if (r + g + b < 0x0c) {
+            if (r < 0x0a && b < 0x0a && g < 0x0a) {
 
-        if (b < 0x46) {
-            g = b;
-            b = 0x00;
-
+            
+            r = 0;
+            g = 0;
+            b = 0;
             }
-
-        //g = g * 8;
-        r = r / 8;
-        b = b / 16;
         }
-    //  if (g < 0x06) {
-    //      g = 0x00;
-    //  }
+    }
 
-    // pixel_grb &= 0xff000000;
-    // pixel_grb |= (g << 16);
+   // }
+    averaged_pixel = b << 8;
+    averaged_pixel |= r << 16;
+    averaged_pixel |= g << 24;
+    // averaged_pixel = b << 10;
+    // averaged_pixel |= r << 18;
+    // averaged_pixel |= g << 26;
+
+   // averaged_pixel = averaged_pixel << 8;
+    
+   // r=0;
+    //g=0;
+    //b=0;
+
+    //pixel 0b rrrrr0 gggggg bbbbb0
+
+    //pixel_grb 0b ggggggxx rrrrrgxx bbbbbgxx 00000000 
 
 
-   //pixel_grb |= (r << 8);
-     //pixel_grb |= b;
 
+    if (dim == 1) {
 
+        }
 
-    // if ((pixel_grb & 0x00ff0000 >> 16) < 0x05) {
-    //     pixel_grb &= (0xff00ffff);  
-    // } 
-
-    // if ((pixel_grb & 0x0000ff00 >> 8) < 0x05) {
-    //     pixel_grb &= (0xffff00ff);  
-    // }
-
-    // if ((pixel_grb & 0x000000ff) < 0x05) {
-    //     pixel_grb &= (0xffffff00);  
-    // }
-    pixel_grb = (g << 24) | (r << 16) | (b << 8);
-    pio_sm_put_blocking(pio, sm, pixel_grb);
+     pixel = ((g << 11) | (r << 5) | (b << 0));
+//pixel = pixel << 16;
+    pio_sm_put_blocking(pio, sm, averaged_pixel);
     }
 
 
@@ -172,66 +196,75 @@ void jumperless_handleFrameStart(uint8_t frame) {
 
     }
 
+
+    uint16_t screen[NUM_PIXELS + 100];
+int dot = 0;
+
+int scanlineOrder[20] = { 99, 10, 11,  0, 1, 2, 3, 4, 5, 6, 7, 8 , 9, 99,  12, 13,99,99, 99, 99, };
+
 void jumperless_blit(uint16_t* downsampled_line, int scanline) {
 
-    // for (int i = 0; i < SCREENWIDTH; i++) {
-    //     put_pixel(pio, sm, downsampled_line[i]);
-    // }
-
-    // this converts the line to "monochrome" greyscale
-    // ditherDownsampledLine(downsampled_line);
-    // for (uint16_t x = 0; x < DOWNSAMPLED_WIDTH; x++) {
-    //     uint16_t downsampled_pixel = downsampled_line[x];
-
-    //     // comment out if using dithering
-    //     downsampled_pixel = colorToGreyscale(downsampled_pixel);
-
-    //     SSD1306_setPixel(buf,START_X + x, scanline, downsampled_pixel > 64);
-    //     SSD1306_setPixel(second_buf,START_X + x, scanline, downsampled_pixel > 128);
-    //     SSD1306_setPixel(third_buf,START_X + x, scanline, downsampled_pixel > 192);
-    //     // SSD1306_render(buf, &screen_area);
-    // }
+ 
     }
-
-uint16_t screen[NUM_PIXELS + 100];
-int dot = 0;
 
 
 void jumperless_handleScanline(uint16_t* line, int scanline) {
-    //nearestNeighborHandleDownsampling(line, scanline, ssd1306_70_40_i2c_blit);
-    //nearestNeighborDownsampleLine(line, line);
-     // for (int i = 0; i < SCREENWIDTH; i++) {
-     //     put_pixel(pio, sm, line[i]);
-     // }
+  
+
+    int downsample_w = 10;
+    int downsample_h = 13;
 
 
-    int downsample_w = 11;
-    int downsample_h = 16;
 
-    int offset_w = 0;//SCREENWIDTH / downsample_w;
+    int offset_w = 10;//SCREENWIDTH / downsample_w;
+    
+    
     int offset_h = 0;//SCREENHEIGHT / downsample_h;
 
-    for (int i = 0; i < LCD_WIDTH; i++) {
-        int downscanline = scanline / downsample_h;
-        if (downscanline < 5) {
 
-            screen[(i * 5) + downscanline] = line[(i * downsample_w) + offset_w];
+
+        offset_h = 0;
+        downsample_h = 10;
+    
+
+    for (int i = 0; i < LCD_WIDTH; i++) {
+
+        int downscanline = ((scanline + offset_h)/ downsample_h)+1;
+        if (downscanline < 0) {
+            continue;
+        }
+
+        if (scanlineOrder[downscanline] == 99) {
+            continue;
+            
+        }
+
+        if (scanlineOrder[downscanline] >=14) {
+            return;
+            
+        }
+        if (scanlineOrder[downscanline] < 5) {
+
+            screen[(i * 5) + scanlineOrder[downscanline]] = line[(i * downsample_w) + offset_w];
             // if ((i*5)+scanline == dot) {
             //     screen[(i*5)+scanline] = 0xffff;
             //     dot++;
             // }
-            } else if (downscanline < 10) {
-                screen[(((i + 29) * 5) + (downscanline))] = line[(i * downsample_w) + offset_w];
+        } else if (scanlineOrder[downscanline] < 10) {
+                screen[(((i + 29) * 5) + scanlineOrder[downscanline])] = line[(i * downsample_w) + offset_w];
                 // if ((((i+29)*5)+scanline) == dot) {
                 //     screen[(((i+29)*5)+scanline)] = 0xffff;
                 //     dot++;
                 // }
-                } else {
+        } else if (scanlineOrder[downscanline] < 14) {
 
-                //screen[(((i+29)*5)+(downscanline))] = line[(i*downsample_w)+offset_w];
+                    if (i < 25){
+                    screen[(300 + ((scanlineOrder[downscanline] - 10)*25) + i)] = line[(i * downsample_w) - (downsample_w/2) + offset_w];
+                    }
+                    //screen[(((i+29)*5)+(downscanline))] = line[(i*downsample_w)+offset_w];
 
 
-                }
+                    }
         }
 
     // if (dot > 300) {
@@ -241,29 +274,91 @@ void jumperless_handleScanline(uint16_t* line, int scanline) {
 
     }
 
+    uint16_t rainbowr[30] = { 30, 29, 26, 23, 20, 17, 14, 11, 8, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 30 };
+    uint16_t rainbowg[30] = {  0,  2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 30, 29, 26, 23, 20, 17, 14, 11, 8, 5, 2, 0, 0, 0, 0, 0, 0, 2, 5 };
+    uint16_t rainbowb[30] = {  0,  0, 0, 0, 0, 0, 0, 0, 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 30, 29, 26, 23, 20, 17, 14, 11, 8, 5, 2 };
+
 
 // with a separate "render" thread we could continue to oscillate between each frame while Doom renders the next
 // this allows for better persistence of vision without biasing towards any particular frame
 // but would also require a rewrite of the multithreading
-
 int framecountforusb = 0;
+int cycleCounter = 0;
 void jumperless_handleFrameEnd(uint8_t frame) {
     //jumperless_clearScreen();
 //tud_task();
+
     framecountforusb++;
-    for (int i = 0; i < (NUM_PIXELS + 60); i++) {
+
+    if (framecountforusb > 4) {
+        cycleCounter++;
+        framecountforusb = 0;
+        //tud_task();
+    }
+
+     if (cycleCounter > 29) {
+        cycleCounter = 0;
+        //tud_task();
+    }
+
+
+    for (int i = 0; i < (NUM_PIXELS); i++) {
 
         // if (i >= 150 && i < 210) {
         //     continue;
         // }
-        put_pixel(pio, sm, screen[i], 1);
-        if (i > 300 && i < 400) {
-            pio_sm_put_blocking(pio, sm, 0x00030303);
+        if (i < 400) {
+            put_pixel(pio, sm, screen[i], 1);
             }
-        if (i > 400 && i < 500) {
-            pio_sm_put_blocking(pio, sm, i * 32);
+      //  put_pixel(pio, sm, screen[i], 1);
+        // if (i > 300 && i < 400) {
+        //     pio_sm_put_blocking(pio, sm, 0x00030303);
+        //     }
+         else if (i >= 400 && i < 446) {
+            uint8_t pixel_r = 3;
+            uint8_t pixel_g = 0;
+            uint8_t pixel_b = 1;
+            // switch (((i-400)+(framecountforusb/8))%3) {
+            //     case 0:
+            //         pixel_r = ((framecountforusb/8)%255);
+            //         pixel_g = ((framecountforusb/8)%128);
+            //         pixel_b = 0;//(i%64);
+            //        // put_pixel(pio, sm, pixel_r, 1);
+            //         break;
+            //     case 1:
+            //         pixel_b = ((framecountforusb/8)%255);
+            //         pixel_r = ((framecountforusb/8)%128);
+            //         pixel_g = 0;//(i%64);
+            //         //put_pixel(pio, sm, pixel_g, 1);
+            //         break;
+            //     case 2:
+            //         pixel_g = ((framecountforusb/8)%255);
+            //         pixel_b = ((framecountforusb/8)%128);
+            //         pixel_r = 0;//(i%64);
+            //         //put_pixel(pio, sm, pixel_b, 1);
+            //         break;
+            //     }
+
+            if (i > 429) {
+                int index = (i-400);
+                pixel_r = rainbowr[(cycleCounter+index)%30]/4;
+                pixel_g = rainbowg[(cycleCounter+index)%30]/4;
+                pixel_b = rainbowb[(cycleCounter+index)%30]/4;
+                } else {
+
+                }
+         
+             
+
+
+            uint16_t pixel = (pixel_r&0b00011111)<<11 | (pixel_g&0b00011111)<<6 | (pixel_b&0b00011111);
+
+
+            put_pixel(pio, sm, pixel, 0);
+           //pio_sm_put_blocking(pio, sm, i );
             }
         }
+        //sleep_ms(2);
     //tud_task();
     //if (framecountforusb > 25) {
         //tud_task();

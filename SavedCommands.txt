@@ -5,6 +5,7 @@ picotool load -v -t bin E1m2wik2.lmp -o 0x10242000
 picotool load -v -t bin doom1.whx -o 0x10042000
 
 
+picotool load -v -t bin e1m3sec.lmp -o 0x10248000  
 picotool load -v -t bin E1m2wik2.lmp -o 0x10248000  
 picotool load -v -t bin doom1.whx -o    0x10048000
 

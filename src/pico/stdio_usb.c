@@ -31,7 +31,7 @@ static mutex_t stdio_usb_mutex;
 static uint8_t stdio_usb_core_num;
 #endif
 // #define PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS 0
-#define PICO_STDIO_USB_TASK_INTERVAL_US 8000
+#define PICO_STDIO_USB_TASK_INTERVAL_US 12000
 // when tinyusb_device is explicitly linked we do no background tud processing
 #if !LIB_TINYUSB_DEVICE
 #ifdef PICO_STDIO_USB_LOW_PRIORITY_IRQ

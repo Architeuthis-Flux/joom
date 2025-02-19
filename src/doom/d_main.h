@@ -24,7 +24,7 @@
 #include "doomdef.h"
 
 
-
+extern boolean main_loop_started;
 
 // Read events from all input devices
 

@@ -585,7 +585,7 @@ function(add_doom_tiny SUFFIX SCREEN)
         EMU8950_NO_RATECONV=1
      TUSB_OPT_DEVICE_ENABLED=1
         # PICO_BUILD=1
-        PICO_CORE1_STACK_SIZE=0x4f8
+        PICO_CORE1_STACK_SIZE=0x498 # was 0x4f8
 
         NO_IERROR=1
     )
@@ -699,7 +699,7 @@ endfunction()
 
 add_doom_tiny_screen("jumperless_v5")
 target_compile_definitions(doom_tiny_usb_jumperless_v5 PRIVATE
-    DOWNSAMPLING_FACTOR_OUT_OF_100=300
+    DOWNSAMPLING_FACTOR_OUT_OF_100=1000
 )
 
 add_doom_tiny_screen("SSD1306_70_40")

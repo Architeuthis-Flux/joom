@@ -3544,7 +3544,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/__/3rdparty/tinyusb/src/portable/
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_sync/include/hardware/sync.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_sync_spin_lock/include/hardware/sync/spin_lock.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h
- /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/include/pico/fix/rp2040_usb_device_enumeration.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_panic/include/pico/platform/panic.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h
@@ -11233,6 +11232,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_video.c.o
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_dma/include/hardware/dma.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio_coproc.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_interp/include/hardware/interp.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_irq/include/hardware/irq.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio_instructions.h
@@ -12091,29 +12091,18 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/jumperless
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stddef.h
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdint.h
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/syslimits.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/class/cdc/cdc.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/class/cdc/cdc_device.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_common.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_compiler.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_error.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_fifo.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_timeout.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_types.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_verify.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/device/usbd.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/osal/osal.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/osal/osal_pico.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/tusb.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/tusb_option.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/config_autogen.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/version.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/config.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/d_main.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/doomdef.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/d_mode.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_timer.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_video.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/jumperless_v5.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/shared.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/shared.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/tusb_config2.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/include/pico_jumperless_matrix.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/include/ws2812.pio.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
@@ -12127,10 +12116,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/jumperless
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/defs.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_stdlib_headers/include/pico/stdlib.h
- /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/critical_section.h
- /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/lock_core.h
- /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/mutex.h
- /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/sem.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_time/include/pico/time.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/platform_defs.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/accessctrl.h
@@ -12170,8 +12155,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/jumperless
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio_instructions.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h
- /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_sync/include/hardware/sync.h
- /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_sync_spin_lock/include/hardware/sync/spin_lock.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_uart/include/hardware/uart.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h
