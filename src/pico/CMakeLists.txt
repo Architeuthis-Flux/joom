@@ -44,6 +44,7 @@ target_include_directories(common_pico INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/..
         ${CMAKE_CURRENT_LIST_DIR}/../../textscreen
+        
         )
 
 target_compile_definitions(common_pico INTERFACE
@@ -52,6 +53,7 @@ target_compile_definitions(common_pico INTERFACE
 # PICO_RP2040_USB_DEVICE_UFRAME_FIX=1
  PICO_RP2350=1
  CFG_TUSB_CONFIG_FILE="tusb_config2.h"
+  DOOM_TINY=1
 # PICO_STDIO_USB_LOW_PRIORITY_IRQ=1
 
 #   CFG_TUD_CDC=3
@@ -62,7 +64,7 @@ target_compile_definitions(common_pico INTERFACE
         PICO_USE_STACK_GUARDS=0 # todo we can actually use these sensibly, but right now we do overflow!
 )
 
-target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi tinyusb_device)
+target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi tinyusb_device )
 
 add_library(pico_cd INTERFACE)
 
@@ -77,10 +79,10 @@ target_compile_definitions(pico_cd INTERFACE
 # if (TARGET tinyusb_host)
 #     target_link_libraries(pico_cd INTERFACE tinyusb_device)
 #  endif()
-pico_enable_stdio_usb(common_pico 1)
-pico_enable_stdio_uart(common_pico 0)
-pico_enable_stdio_usb(pico_cd 1)
-pico_enable_stdio_uart(pico_cd 0)
+# pico_enable_stdio_usb(common_pico 1)
+# pico_enable_stdio_uart(common_pico 0)
+# pico_enable_stdio_usb(pico_cd 1)
+# pico_enable_stdio_uart(pico_cd 0)
 
 #  set(PROJECT hello)
 # cmake_minimum_required(VERSION 3.12)

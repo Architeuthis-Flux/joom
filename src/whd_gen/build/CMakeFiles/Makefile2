@@ -54,10 +54,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen
+CMAKE_SOURCE_DIR = /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/build
+CMAKE_BINARY_DIR = /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -85,14 +85,14 @@ clean: CMakeFiles/whd_gen.dir/clean
 CMakeFiles/whd_gen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/whd_gen.dir/build.make CMakeFiles/whd_gen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/whd_gen.dir/build.make CMakeFiles/whd_gen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target whd_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Built target whd_gen"
 .PHONY : CMakeFiles/whd_gen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/whd_gen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/build/CMakeFiles 10
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/build/CMakeFiles 11
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/whd_gen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/build/CMakeFiles 0
 .PHONY : CMakeFiles/whd_gen.dir/rule
 
 # Convenience name for target.
@@ -102,7 +102,7 @@ whd_gen: CMakeFiles/whd_gen.dir/rule
 # codegen rule for target.
 CMakeFiles/whd_gen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/whd_gen.dir/build.make CMakeFiles/whd_gen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Finished codegen for target whd_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Finished codegen for target whd_gen"
 .PHONY : CMakeFiles/whd_gen.dir/codegen
 
 # clean rule for target.

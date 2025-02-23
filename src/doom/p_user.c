@@ -39,8 +39,10 @@
 // Movement.
 //
 
-// 16 pixels of bob
-#define MAXBOB	0x100000	
+// 8 pixels of bob
+#define MAXBOB	0x010000	
+
+
 
 boolean		onground;
 

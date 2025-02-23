@@ -18,6 +18,9 @@ typedef enum {
     PDCOL_CEILING,
 } pd_column_type;
 
+extern volatile int splash_screen;
+extern volatile int splash_screen_done;
+
 extern volatile uint8_t interp_in_use;
 void pd_init();
 void pd_core1_loop();

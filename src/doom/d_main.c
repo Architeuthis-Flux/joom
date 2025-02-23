@@ -267,14 +267,14 @@ boolean D_Display (void)
     I_UpdateNoBlit ();
     
     // draw the view directly
-#if !DOOM_TINY
+//#if !DOOM_TINY
     if (gamestate == GS_LEVEL && !automapactive && gametic)
-#else
+//#else
     // not sure what the reason for not drawing when gametic == 0 (i.e. the first frame of the game), however it means we
     // don't draw anything in a network game until the sync is done, which screws up what we see during the wipe. I haven't
     // seen any downside to doing the drawing.
-    if (gamestate == GS_LEVEL && !automapactive)
-#endif
+    //if (gamestate == GS_LEVEL && !automapactive)
+//#endif
 	    R_RenderPlayerView (&players[displayplayer]);
 
 #if !DOOM_TINY
@@ -471,7 +471,7 @@ void D_RunFrame()
     static int wipestart;
     static boolean wipe;
 
-    if (wipe)
+    if (wipe )
     {
         do
         {
@@ -515,6 +515,8 @@ void D_RunFrame()
         do {
             D_Display();
         } while (wipestate);
+
+        I_FinishUpdate();
 #endif
     }
 }
@@ -571,6 +573,7 @@ void D_DoomLoop (void)
 
     while (1)
     {
+       
         D_RunFrame();
 #if PICO_DOOM_INFO
         static uint8_t x = 0;
@@ -1577,9 +1580,9 @@ void D_DoomMain (void)
 
     DEH_printf("W_Init: Init WADfiles.\n");
     
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
-    gpio_put(PICO_DEFAULT_LED_PIN, 1);
+    // gpio_init(PICO_DEFAULT_LED_PIN);
+    // gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+    // gpio_put(PICO_DEFAULT_LED_PIN, 1);
 #if !NO_FILE_ACCESS && !DOOM_TINY
     D_AddFile(iwadfile);
 #else
@@ -1896,7 +1899,7 @@ void D_DoomMain (void)
 #endif
 
     // get skill / episode / map from parms
-    startskill = sk_medium;
+    startskill = sk_easy;
     startepisode = 1;
     startmap = 1;
     autostart = false;

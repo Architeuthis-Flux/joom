@@ -20,10 +20,11 @@ pico_sdk_init()
 
 add_library(pico_jumperless_v5 INTERFACE)
 
+
 target_sources(pico_jumperless_v5 INTERFACE
 ${CMAKE_CURRENT_LIST_DIR}/src/jumperless_v5.c    
-# ${CMAKE_CURRENT_LIST_DIR}/src/usb_descriptors.c
-# ${CMAKE_CURRENT_LIST_DIR}/src/stdio_usb.c
+${CMAKE_CURRENT_LIST_DIR}/src/RotaryEncoderStuff.c
+${CMAKE_CURRENT_LIST_DIR}/src/probing.c
 
 )
 
@@ -44,8 +45,10 @@ hardware_gpio
 hardware_pio 
 hardware_timer
 pico_time
-tinyusb_device 
-tinyusb_board
+
+
+# tinyusb_device 
+# tinyusb_board
 pico_unique_id)
 
 

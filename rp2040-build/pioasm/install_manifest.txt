@@ -1,5 +1,0 @@
-/Users/kevinsanto/Documents/GitHub/joom/joom/rp2040-build/pioasm-install/pioasm/pioasm
-/Users/kevinsanto/Documents/GitHub/joom/joom/rp2040-build/pioasm-install/pioasm/pioasmTargets.cmake
-/Users/kevinsanto/Documents/GitHub/joom/joom/rp2040-build/pioasm-install/pioasm/pioasmTargets-release.cmake
-/Users/kevinsanto/Documents/GitHub/joom/joom/rp2040-build/pioasm-install/pioasm/pioasmConfig.cmake
-/Users/kevinsanto/Documents/GitHub/joom/joom/rp2040-build/pioasm-install/pioasm/pioasmConfigVersion.cmake

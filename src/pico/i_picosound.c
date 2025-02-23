@@ -38,7 +38,7 @@
 
 #define ADPCM_BLOCK_SIZE 128
 #define ADPCM_SAMPLES_PER_BLOCK_SIZE 249
-#define LOW_PASS_FILTER
+#define LOW_PASS_FILTER 1
 #define MIX_MAX_VOLUME 128
 typedef struct channel_s channel_t;
 
@@ -70,7 +70,7 @@ static struct audio_buffer_pool *producer_pool;
 static struct audio_format audio_format = {
         .format = AUDIO_BUFFER_FORMAT_PCM_S16,
         .sample_freq = PICO_SOUND_SAMPLE_FREQ,
-        .channel_count = 2,
+        .channel_count = 1,
 };
 
 static struct audio_buffer_format producer_format = {
@@ -417,6 +417,7 @@ static void I_Pico_ShutdownSound(void)
 
 static boolean I_Pico_InitSound(boolean _use_sfx_prefix)
 {
+    //return true;
     int i;
     use_sfx_prefix = _use_sfx_prefix;
 
@@ -424,8 +425,8 @@ static boolean I_Pico_InitSound(boolean _use_sfx_prefix)
     producer_pool = audio_new_producer_pool(&producer_format, 2, 1024); // todo correct size
 
     struct audio_i2s_config config = {
-            .data_pin = PICO_AUDIO_I2S_DATA_PIN,
-            .clock_pin_base = PICO_AUDIO_I2S_CLOCK_PIN_BASE,
+            .data_pin = 19,
+            .clock_pin_base = 20,
             .dma_channel = 6,
             .pio_sm = 0,
     };
@@ -436,12 +437,12 @@ static boolean I_Pico_InitSound(boolean _use_sfx_prefix)
         panic("PicoAudio: Unable to open audio device.\n");
     }
 
-#if INCREASE_I2S_DRIVE_STRENGTH
+////#if INCREASE_I2S_DRIVE_STRENGTH
     bi_decl(bi_program_feature("12mA I2S"));
-    gpio_set_drive_strength(PICO_AUDIO_I2S_DATA_PIN, GPIO_DRIVE_STRENGTH_12MA);
-    gpio_set_drive_strength(PICO_AUDIO_I2S_CLOCK_PIN_BASE, GPIO_DRIVE_STRENGTH_12MA);
-    gpio_set_drive_strength(PICO_AUDIO_I2S_CLOCK_PIN_BASE+1, GPIO_DRIVE_STRENGTH_12MA);
-#endif
+    gpio_set_drive_strength(19, GPIO_DRIVE_STRENGTH_12MA);
+    // gpio_set_drive_strength(20, GPIO_DRIVE_STRENGTH_12MA);
+    // gpio_set_drive_strength(21+1, GPIO_DRIVE_STRENGTH_12MA);
+//#endif
     // we want to pass thr
     bool ok = audio_i2s_connect_extra(producer_pool, false, 0, 0, NULL);
     assert(ok);

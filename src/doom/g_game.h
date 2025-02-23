@@ -25,7 +25,7 @@
 #include "d_event.h"
 #include "d_ticcmd.h"
 
-
+extern gamestate_t     gamestate; 
 //
 // GAME
 //

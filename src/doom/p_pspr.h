@@ -46,8 +46,8 @@
 #define FF_FULLBRIGHT	0x8000	// flag in thing->frame
 #define FF_FRAMEMASK	0x7fff
 #else
-#define FF_FULLBRIGHT	0x80	// flag in thing->frame
-#define FF_FRAMEMASK	0x7f
+#define FF_FULLBRIGHT	0xa0	// flag in thing->frame
+#define FF_FRAMEMASK	0x9f
 #endif
 
 

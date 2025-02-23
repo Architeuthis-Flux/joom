@@ -85,11 +85,24 @@ ${PICO_SDK_PATH}/src/rp2_common/pico_stdio_usb/include
 ${CMAKE_CURRENT_LIST_DIR}
 )
 
+target_compile_definitions(doom INTERFACE
+    DOOM_TINY=1
+
+    # TUSB_OPT_DEVICE_ENABLED=1
+    # PICO_RP2350=1
+    # CFG_TUSB_CONFIG_FILE="tusb_config2.h"
+    # NO_USE_MOUSE=1
+    # PICO_AUDIO_I2S_PIO=1
+    # PICO_AUDIO_I2S_DMA_IRQ=1
+    # PICO_USE_SW_SPIN_LOCKS=0
+    # PICO_USE_STACK_GUARDS=0
+)
+
 if (NOT PICO_SDK)
     target_link_libraries(doom INTERFACE SDL2::SDL2 SDL2::mixer SDL2::net)
 else()
     target_link_libraries(doom INTERFACE pico_stdlib pico_multicore tinyusb_device tinyusb_board pico_unique_id)
         # pico_add_extra_outputs(doom)
-        pico_enable_stdio_usb(doom 1)
-        pico_enable_stdio_uart(doom 0)
+        # pico_enable_stdio_usb(doom 1)
+        # pico_enable_stdio_uart(doom 0)
 endif()

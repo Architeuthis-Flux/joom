@@ -31,7 +31,7 @@ typedef struct audio_buffer audio_buffer_t;
 
 #ifndef NUM_SOUND_CHANNELS
 // this is the defaul tin game not 16
-#define NUM_SOUND_CHANNELS 8
+#define NUM_SOUND_CHANNELS 1
 #endif
 
 void I_PicoSoundSetMusicGenerator(void (*generator)(audio_buffer_t *buffer));

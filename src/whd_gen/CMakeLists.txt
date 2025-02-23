@@ -3,7 +3,8 @@ if (NOT PICO_ON_DEVICE)
     target_sources(wad INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/wad.cpp)
     target_include_directories(wad INTERFACE ${CMAKE_CURRENT_LIST_DIR})
-
+enable_language(CXX)
+set(CMAKE_CXX_STANDARD 14)
     add_executable(whd_gen
             whd_gen.cpp
             mus2seq.cpp

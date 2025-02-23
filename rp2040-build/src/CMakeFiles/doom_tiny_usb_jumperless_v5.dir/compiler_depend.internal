@@ -2065,6 +2065,72 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/Users/kevinsanto/pico/pico-sdk/sr
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_runtime/include/pico/runtime.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_runtime_init/include/pico/runtime_init.h
 
+src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.o
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_ansi.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_newlib_version.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/assert.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/_default_types.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/_types.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/ieeefp.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/newlib.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/stdint.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/string.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/strings.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_intsup.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_locale.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_stdint.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_types.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/cdefs.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/config.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/features.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/lock.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/reent.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/string.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdbool.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stddef.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdint.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/config_autogen.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/version.h
+ /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/config.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/error.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/types.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/code.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/defs.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_time/include/pico/time.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/platform_defs.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/accessctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/addressmap.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/bootram.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/intctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/powman.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/sio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/accessctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/bootram.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/powman.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/pico_platform/include/pico/platform.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/boot_bootrom_headers/include/boot/bootrom_constants.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_base/include/hardware/address_mapped.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_boot_lock/include/hardware/boot_lock.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_sync/include/hardware/sync.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_sync_spin_lock/include/hardware/sync/spin_lock.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_bootrom/include/pico/bootrom.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_bootrom/include/pico/bootrom/lock.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_bootrom/include/pico/bootrom_constants.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_flash/include/pico/flash.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_panic/include/pico/platform/panic.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h
+
 src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_ansi.h
@@ -4584,7 +4650,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/d_main.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/deh_str.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_endoom.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_joystick.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_sound.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_system.h
@@ -4612,6 +4677,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/d_main.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/w_wad.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whddata.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/z_zone.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_picosound.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/tusb_config2.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
@@ -5652,7 +5718,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/g_game.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/deh_str.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomkeys.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_sound.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_system.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_timer.h
@@ -5673,6 +5738,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/g_game.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/w_wad.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whddata.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/z_zone.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
@@ -5851,7 +5917,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/hu_stuff.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/deh_str.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomkeys.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_sound.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_swap.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_timer.h
@@ -5867,6 +5932,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/hu_stuff.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/w_wad.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whddata.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/z_zone.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
@@ -6031,7 +6097,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/m_menu.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/deh_str.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomkeys.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_sound.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_swap.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_system.h
@@ -6051,6 +6116,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/doom/m_menu.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/w_wad.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whddata.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/z_zone.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
@@ -10726,20 +10792,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_input.c.o
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stddef.h
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdint.h
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/syslimits.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/class/cdc/cdc.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/class/cdc/cdc_device.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_common.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_compiler.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_error.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_fifo.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_timeout.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_types.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/common/tusb_verify.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/device/usbd.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/osal/osal.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/osal/osal_pico.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/tusb.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/3rdparty/tinyusb/src/tusb_option.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/config_autogen.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/version.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/config.h
@@ -10756,20 +10808,23 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_input.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/sounds.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomkeys.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_sound.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_system.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_timer.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_video.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/m_argv.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/m_config.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/m_controls.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/m_fixed.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/RotaryEncoderStuff.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/probing.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/tables.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/v_patch.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whddata.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/z_zone.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/board_api.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/tusb_config2.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/jumperless_v5.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/shared.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
@@ -10781,9 +10836,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_input.c.o
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/defs.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_stdlib_headers/include/pico/stdlib.h
- /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/critical_section.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/lock_core.h
- /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/mutex.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_sync/include/pico/sem.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_time/include/pico/time.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/platform_defs.h
@@ -10826,7 +10879,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_input.c.o
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_stdio/include/pico/stdio.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h
- /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb.h
 
 src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_picosound.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_picosound.c
@@ -10993,7 +11045,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_system.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/p_saveg.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomkeys.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_joystick.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_sound.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_system.h
@@ -11011,6 +11062,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_system.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/w_wad.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whddata.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/z_zone.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/piconet.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/tusb_config2.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
@@ -11160,7 +11212,6 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_video.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/r_defs.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/r_state.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
- /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_joystick.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_system.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_timer.h
@@ -11182,6 +11233,7 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/i_video.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/w_wad.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whddata.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/z_zone.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screen.h
  /Users/kevinsanto/pico/pico-extras/src/common/pico_scanvideo/include/pico/scanvideo/composable_scanline.h
  /Users/kevinsanto/pico/pico-extras/src/common/pico_scanvideo/include/pico/scanvideo/scanvideo_base.h
@@ -12055,6 +12107,91 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico/usb_descriptors.c.o
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_unique_id/include/pico/unique_id.h
 
+src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/RotaryEncoderStuff.c.o
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/RotaryEncoderStuff.c
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_ansi.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_newlib_version.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/alloca.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/assert.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/_default_types.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/_types.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/ieeefp.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/stdlib.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/newlib.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/stdint.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/stdio.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/stdlib.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_intsup.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_stdint.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_types.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/cdefs.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/config.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/features.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/lock.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/reent.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/stdio.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdarg.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdbool.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stddef.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdint.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/config_autogen.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/version.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/RotaryEncoderStuff.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/include/quadrature.pio.h
+ /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/config.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/error.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/types.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_stdlib_headers/include/pico/stdlib.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_time/include/pico/time.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/platform_defs.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/accessctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/addressmap.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/clocks.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/dreq.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/intctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/io_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/m33.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/pads_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/pio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/resets.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/sio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/uart.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/accessctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/clocks.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/interp.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/io_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/m33.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/nvic.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/pads_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/pio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/resets.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/scb.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/sio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/uart.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/pico_platform/include/pico/platform.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/pico_platform/include/pico/platform/cpu_regs.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_base/include/hardware/address_mapped.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio_coproc.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_irq/include/hardware/irq.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio_instructions.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_uart/include/hardware/uart.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_panic/include/pico/platform/panic.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_stdio/include/pico/stdio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h
+
 src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/jumperless_v5.c.o
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/jumperless_v5.c
  /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_ansi.h
@@ -12096,15 +12233,24 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/jumperless
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/config.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/d_main.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/doomdef.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doom/g_game.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/d_event.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/d_mode.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/d_ticcmd.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/doomtype.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_timer.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/i_video.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/m_fixed.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/jumperless_v5.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/shared.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/picodoom.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/i_input.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico/pico-screens/screens/shared.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/RotaryEncoderStuff.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/include/bitmaps.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/include/pico_jumperless_matrix.h
  /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/include/ws2812.pio.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/probing.h
  /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
  /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
@@ -12154,6 +12300,74 @@ src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/jumperless
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_irq/include/hardware/irq.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio_instructions.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_uart/include/hardware/uart.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_compiler/include/pico/platform/compiler.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_panic/include/pico/platform/panic.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_platform_sections/include/pico/platform/sections.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_stdio/include/pico/stdio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h
+
+src/CMakeFiles/doom_tiny_usb_jumperless_v5.dir/pico_jumperless_v5/src/probing.c.o
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/probing.c
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_ansi.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/_newlib_version.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/assert.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/_default_types.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/machine/ieeefp.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/newlib.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/stdint.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_intsup.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/_stdint.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/cdefs.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/config.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/arm-none-eabi/include/sys/features.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdarg.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdbool.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stddef.h
+ /Users/kevinsanto/.pico-sdk/toolchain/13_3_Rel1/lib/gcc/arm-none-eabi/13.3.1/include/stdint.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/config_autogen.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/rp2040-build/generated/pico_base/pico/version.h
+ /Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/pico_jumperless_v5/src/probing.h
+ /Users/kevinsanto/pico/pico-sdk/src/boards/include/boards/jumperless_v5.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/assert.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/config.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/error.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_base_headers/include/pico/types.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_stdlib_headers/include/pico/stdlib.h
+ /Users/kevinsanto/pico/pico-sdk/src/common/pico_time/include/pico/time.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/platform_defs.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/accessctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/addressmap.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/dreq.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/intctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/io_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/m33.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/pads_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/resets.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/sio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/uart.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/accessctrl.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/interp.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/io_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/m33.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/nvic.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/pads_bank0.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/resets.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/scb.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/sio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/timer.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/hardware_structs/include/hardware/structs/uart.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/pico_platform/include/pico/platform.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2350/pico_platform/include/pico/platform/cpu_regs.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_base/include/hardware/address_mapped.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio_coproc.h
+ /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_irq/include/hardware/irq.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_resets/include/hardware/resets.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_timer/include/hardware/timer.h
  /Users/kevinsanto/pico/pico-sdk/src/rp2_common/hardware_uart/include/hardware/uart.h

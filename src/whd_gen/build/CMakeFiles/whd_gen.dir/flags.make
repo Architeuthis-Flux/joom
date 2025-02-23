@@ -5,17 +5,17 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 C_DEFINES = -DIS_WHD_GEN=1
 
-C_INCLUDES = -I/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/.. -I/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/../doom -I/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen
+C_INCLUDES = -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/.. -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../doom -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../../doom -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../../adpcm-xq -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../adpcm-xq -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/adpcm-xq
 
-C_FLAGSarm64 =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
+C_FLAGSarm64 = -Os -DNDEBUG -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
 
-C_FLAGS =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
+C_FLAGS = -Os -DNDEBUG -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
 
 CXX_DEFINES = -DIS_WHD_GEN=1
 
-CXX_INCLUDES = -I/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/.. -I/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen/../doom -I/Users/kevinsanto/documents/GitHub/rp2040-doom/src/whd_gen
+CXX_INCLUDES = -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/.. -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../doom -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../../doom -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../../adpcm-xq -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/../adpcm-xq -I/Users/kevinsanto/Documents/GitHub/joom.tmp/joom/src/whd_gen/adpcm-xq
 
-CXX_FLAGSarm64 =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
+CXX_FLAGSarm64 = -Os -DNDEBUG -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
 
-CXX_FLAGS =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
+CXX_FLAGS = -Os -DNDEBUG -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
 

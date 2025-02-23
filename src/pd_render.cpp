@@ -14,7 +14,7 @@
 #include "pico/divider.h"
 #include "image_decoder.h"
 
-
+#define PICO_ON_DEVICE 1
 #include <set>
 extern "C" {
 #include "doom/d_main.h"
@@ -69,6 +69,10 @@ static int16_t sub_gamestate;
 
 CU_REGISTER_DEBUG_PINS(flat_decode, patch_decode, full_render, render_thing, render_flat, start_end)
 extern uint8_t restart_song_state;
+
+
+volatile int splash_screen = 1;
+volatile int splash_screen_done = 0;
 
 //CU_SELECT_DEBUG_PINS(patch_decode)
 //CU_SELECT_DEBUG_PINS(render_thing)
@@ -2396,10 +2400,12 @@ static void draw_fuzz_columns() {
 
 static void draw_splash(int patch_num, int top, int bottom, uint8_t *dest, int single_col = -1) {
     patch_decode_info pdi;
+
     get_patch_decoder(patch_num, &pdi);
     int w = patch_width(pdi.patch);
     int h = patch_height(pdi.patch);
     assert(w == 320 && h == 200);
+    //h = 100;
     const uint16_t *col_offsets = pdi.col_offsets;
     const uint8_t *patch_decoder_table = get_patch_decoder_table(patch_num, pdi.decoder);
     uint32_t delta = (bottom - top) * SCREENWIDTH - 1;
@@ -2472,10 +2478,15 @@ void maybe_draw_single_screen(int patch_num) {
         next_video_type = VIDEO_TYPE_SINGLE;
         draw_splash(patch_num, 0, MAIN_VIEWHEIGHT, frame_buffer[render_frame_index]);
         sub_gamestate = 1;
+        splash_screen = 1;
+        splash_screen_done = 0;
+
     } else if (sub_gamestate == 1) {
         draw_splash(patch_num, MAIN_VIEWHEIGHT, SCREENHEIGHT,
                     frame_buffer[render_frame_index^1] + (MAIN_VIEWHEIGHT - 32) * SCREENWIDTH);
         sub_gamestate = 2;
+        splash_screen_done = 0;
+        splash_screen = 1;
     }
 }
 
@@ -2796,7 +2807,7 @@ void pd_end_frame(int wipe_start) {
     sem_release(&core1_do_regular);
 #endif
     draw_regular_columns(0);
-#if !DEMO1_ONLY
+#if !DEMO1_ONLY && !NO_USE_FINALE_BUNNY 
     if (gamestate == GS_FINALE && finalestage == F_STAGE_CAST && !wipestate) {
         // note we do this before core0_done so core1 is still playing music
         int sprite_lump = F_CastSprite();
@@ -2855,7 +2866,7 @@ void pd_end_frame(int wipe_start) {
                 break;
             }
             case GS_FINALE: {
-#if !DEMO1_ONLY
+#if !DEMO1_ONLY && !NO_USE_FINALE_BUNNY
                 if (finalestage==F_STAGE_ARTSCREEN && !F_ArtScreenLumpName() && !wipestate) {
                     static uint16_t last_scroll;
                     int scroll = SCREENWIDTH - F_BunnyScrollPos();
@@ -2942,7 +2953,7 @@ void pd_end_frame(int wipe_start) {
     if (!pre_wipe_state && !wipestate && gamestate == GS_LEVEL && gametic && !inhelpscreens) {
         HU_Drawer();
     }
-#if !DEMO1_ONLY
+#if !DEMO1_ONLY && !NO_USE_FINALE_BUNNY
     if (gamestate == GS_FINALE && finalestage == F_STAGE_CAST && !wipestate) {
         F_CastDrawer(); // just draw the text
     }
@@ -2975,8 +2986,11 @@ void pd_end_frame(int wipe_start) {
 
 void pd_core1_loop() {
 #if PICO_ON_DEVICE
+
+
     sem_acquire_blocking(&core1_wake);
 #if USE_CORE1_FOR_FLATS
+
     while (!sem_acquire_timeout_ms(&core1_do_flats, 1)) {
         SafeUpdateSound();
     }
@@ -2984,6 +2998,7 @@ void pd_core1_loop() {
     draw_visplanes(core1_fr_list);
     interp_in_use = false;
 #if USE_CORE1_FOR_REGULAR
+//while(1);
     while (!sem_acquire_timeout_ms(&core1_do_regular, 1)) {
         SafeUpdateSound();
     }

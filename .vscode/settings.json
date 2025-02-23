@@ -1,5 +1,5 @@
 {
-    "cmake.options.statusBarVisibility": "hidden",
+    "cmake.options.statusBarVisibility": "icon",
     "cmake.options.advanced": {
         "build": {
             "statusBarVisibility": "hidden"
@@ -12,7 +12,7 @@
         }
     },
     "cmake.configureOnEdit": false,
-    "cmake.automaticReconfigure": false,
+    "cmake.automaticReconfigure": true,
     "cmake.configureOnOpen": false,
     "cmake.generator": "Ninja",
     "cmake.cmakePath": "${userHome}/.pico-sdk/cmake/v3.29.9/bin/cmake",
@@ -40,6 +40,14 @@
         "shared.h": "c",
         "pico.h": "c",
         "image_decoder.h": "c",
-        "d_main.h": "c"
-    }
+        "d_main.h": "c",
+        "w_wad.h": "c",
+        "w_file.h": "c",
+        "m_config.h": "c",
+        "doomtype.h": "c",
+        "m_controls.h": "c",
+        "config.h": "c",
+        "probing.h": "c"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

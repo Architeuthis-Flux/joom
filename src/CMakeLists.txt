@@ -333,7 +333,7 @@ target_compile_definitions(small_doom_common INTERFACE
         DOOM_CONST=1 # thread const thru lots of places
 
         SOUND_LOW_PASS=1
-        NUM_SOUND_CHANNELS=4 # sounds ok (actually that is how many are used by default)
+        NUM_SOUND_CHANNELS=8 # sounds ok (actually that is how many are used by default)
 
         # functionality
         NO_USE_CHECKSUM=1
@@ -363,7 +363,7 @@ target_compile_definitions(small_doom_common INTERFACE
         NO_DRAW_SPRITES=1
         NO_DRAW_PSPRITES=1
 
-#        NO_VISPLANES=1
+        # NO_VISPLANES=1
         NO_VISPLANE_GUTS=1
         NO_VISPLANE_CACHES=1 # todo these might be fine as they can be temporary
         NO_DRAWSEGS=1
@@ -372,9 +372,9 @@ target_compile_definitions(small_doom_common INTERFACE
 
         NO_MASKED_FLOOR_CLIP=1 # not needed with PD_ rendering and with floor clip it we have occasional visual glitches with sprites split across visplanes
 
-        PD_DRAW_COLUMNS=1
+         PD_DRAW_COLUMNS=1
         PD_DRAW_MARKERS=1
-        PD_DRAW_PLANES=1
+         PD_DRAW_PLANES=1
 
         PD_SCALE_SORT=1
 
@@ -460,7 +460,7 @@ target_compile_definitions(small_doom_common INTERFACE
         PICO_NO_TIMING_DEMO=1
         NO_USE_EXIT=1 # not sure whether we have an exit... if so what does it need to do?
 
-        PICO_DEBUG_PIN_BASE=18
+        PICO_DEBUG_PIN_BASE=6
         PICO_DEBUG_PIN_COUNT=2
 )
 
@@ -490,8 +490,8 @@ function(add_doom_tiny SUFFIX SCREEN)
     target_link_libraries(doom_tiny${SUFFIX} PRIVATE doom ${EXTRA_LIBS})
     target_link_libraries(doom_tiny${SUFFIX} PRIVATE small_doom_common)
 
-    pico_enable_stdio_usb(doom_tiny${SUFFIX} 0)
-    pico_enable_stdio_uart(doom_tiny${SUFFIX} 1)
+    # pico_enable_stdio_usb(doom_tiny${SUFFIX} 0)
+    # pico_enable_stdio_uart(doom_tiny${SUFFIX} 1)
 
     if (PICO_SDK)
         pico_set_float_implementation(doom_tiny${SUFFIX} none)
@@ -502,14 +502,14 @@ function(add_doom_tiny SUFFIX SCREEN)
     target_compile_options(doom_tiny${SUFFIX} PRIVATE
             -Wno-format-truncation)
     target_compile_definitions(doom_tiny${SUFFIX} PRIVATE
-        DOOM_TINY=1
+         DOOM_TINY=1
 
         # LILYGO_TTGO=1
         # ST7789_240_135=1
         # SSD1306_70_40=1
         # SSD1306_70_40_i2c=1
         ${SCREEN}=1
-         TUSB_OPT_DEVICE_ENABLED=1
+        #  TUSB_OPT_DEVICE_ENABLED=1
         SUPPORT_OVERLAYS=1
         EMU8950_SLOT_RENDER=1
 
@@ -518,13 +518,13 @@ function(add_doom_tiny SUFFIX SCREEN)
 
         #NO_DRAW_MENU=1
         # SDK minimilization
-        # PICO_TIME_DEFAULT_ALARM_POOL_DISABLED=1
-        PICO_TIME_DEFAULT_ALARM_POOL_MAX_TIMERS=4
+         PICO_TIME_DEFAULT_ALARM_POOL_DISABLED=1
+        PICO_TIME_DEFAULT_ALARM_POOL_MAX_TIMERS=1
         PICO_DISABLE_SHARED_IRQ_HANDLERS=1
-        # PICO_USE_OPTIMISTIC_SBRK=1
+        PICO_USE_OPTIMISTIC_SBRK=1
 
         # MUSIC
-        USE_EMU8950_OPL=1
+         USE_EMU8950_OPL=1
         USE_DIRECT_MIDI_LUMP=1
 
         NO_USE_NET=1 # standard networking
@@ -558,7 +558,7 @@ function(add_doom_tiny SUFFIX SCREEN)
         #NO_PAGE_DRAWER=1 # splash screens
         #NO_HU_DRAWER=1
 
-        USE_WHD=1
+         USE_WHD=1
 
 
         NO_Z_MALLOC_USER_PTR=1 # onyl needed for freeing textures i think
@@ -582,8 +582,8 @@ function(add_doom_tiny SUFFIX SCREEN)
         #FORCE_NODRAW=1
         USE_MEMORY_WAD=1
         # PICO_DEBUG_MALLOC=1
-        EMU8950_NO_RATECONV=1
-     TUSB_OPT_DEVICE_ENABLED=1
+         EMU8950_NO_RATECONV=1
+    #  TUSB_OPT_DEVICE_ENABLED=1
         # PICO_BUILD=1
         PICO_CORE1_STACK_SIZE=0x498 # was 0x4f8
 
@@ -655,9 +655,11 @@ if (PICO_SDK)
     add_library(tiny_settings INTERFACE)
     target_compile_definitions(tiny_settings INTERFACE
         WHD_SUPER_TINY=1
-        DEMO1_ONLY=1
+        #  DEMO1_ONLY=1
         NO_USE_FINALE_CAST=1
         NO_USE_FINALE_BUNNY=1
+        # DOOM_TINY=0
+        # PICO_ON_DEVICE=1
     )
 endif()
 
@@ -680,10 +682,11 @@ function(add_doom_tiny_screen SCREEN)
         if (PICO_ON_DEVICE)
             # suppress_tinyusb_warnings()
             add_doom_tiny(_usb_${SCREEN} ${SCREEN})
-            target_link_libraries(doom_tiny_usb_${SCREEN} PRIVATE tiny_settings pico_cd)
+            target_link_libraries(doom_tiny_usb_${SCREEN} PRIVATE tiny_settings pico_cd  pico_bootsel_via_double_reset)
             target_compile_definitions(doom_tiny_usb_${SCREEN} PRIVATE 
-                    USB_SUPPORT=1
+                    # USB_SUPPORT=1
                     TINY_WAD_ADDR=0x10048000 # ugh tinyusb is >8K currently!!
+                
             )
             # disabled for same reason as above
             # add_doom_tiny(_nost_usb_${SCREEN} ${SCREEN})
