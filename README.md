@@ -5,6 +5,8 @@
 
 https://github.com/user-attachments/assets/2010a8c9-6dff-44e7-a07a-01d87fca635a
 
+There's also [an article on Hackster.io](https://www.hackster.io/news/kevin-santo-cappuccio-hacks-the-jumperless-v5-into-the-world-s-first-breadboard-to-run-doom-3b32637de4a3) about it when it was less finished than it is now, which might give some context for *why* I did this.
+
 Okay, it's approaching "good enough" for me to move on with my life. Some tips:
 
 First the controls:
