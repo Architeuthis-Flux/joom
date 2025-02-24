@@ -34,6 +34,32 @@ When you're done, you'll need to load the [normal firmware](https://github.com/A
 
 It's easier to see what's going on in person, but still serves as an excellent blindness simulator. 0/10, would not recommend being blind, especially with a bunch of demons trying to kill you. It helps a lot to play the game in an online [emulator](https://www.retrogames.cz/play_414-DOS.php) first to give you a sense of wtf you're looking at. 
 
+In [releases](https://github.com/Architeuthis-Flux/joom/releases/latest), there's a dump of the entire flash chip (which is interestingly 33Mb because it supports 2 16Mb flash chips, it took me a while to figure that one out), so you don't have to fuck around with the whole `picotool load doom1.whd -0x10048000` stuff. 
+
+If you want to do all that, like you want to load a different WAD file or whatever, or work on the code yourself, the just the [doom_tiny_usb_jumperless_v5.uf2](https://github.com/Architeuthis-Flux/joom/blob/rp2/rp2040-build/src/doom_tiny_usb_jumperless_v5.uf2) file is in the [rp2040-build](https://github.com/Architeuthis-Flux/joom/tree/10905918442a956750ceecd15c0da1d8c3905d88/rp2040-build) folder inside `src`.
+
+When you decide you're done and want to go back to doing things the Jumperless was actually built for, you'll need to load the [real firmware](https://github.com/Architeuthis-Flux/JumperlessV5/releases/latest)
+
+USB isn't initialized, so the 1200 baud bootloader thing won't work, you'll need to need to do the BOOT button thing to load it. 
+
+
+```
+TODO (but probably won't, I've spent waaay too much time on this already):
+
+- Somehow adjust lighting so important things (corners, enemies, doors, etc.) "pop" so you can actually see what the hell going on
+- Probe sense pads for steering. This is a completely fresh firmware written in raw pico-sdk, so it'll take some massaging to port that code over from the real firmware
+- Allow you to stick buttons into the breadboard as controls, but once again, rewriting the crossbar routing stuff in pico-sdk will be a nightmare
+- Somehow make this a thing you can run from Jumperless V5's App library (might make those things above easy.) If anyone has any hot tips for mixing arduino-pico code with pico-sdk code, please let me know. It *must* be possible.
+- Make menu text huge so you can kinda read it
+- Use the LEDs at the top to give you some info about what's going on (health, ammo, waypoints, idk), right now they just cycle rainbowy colors
+- Get it working with USB or UART so you can either SDL a keyboard in or use an Arduino to send controls
+- Make it not crash as much, there's some condition somewhere that crashes the game if you wiggle the clickwheel while releasing the probe button
+- Get look sensitivity right and add some acceleration. The downsampled screen and rotary encoder make turning slower than you'd probably want, even with my hacks
+```
+
+
+##### This was built for a Jumperless V5 rev 3, and a rev 3 probe (which is what you beta testers have). The rev 4 probes will work fine too but the buttons are swapped. For the real production rev 6s, the LEDs are split into 2 separate strings for faster refresh rates (60 breadboard rows on one, and rails + Nano header + logo on the other), so only the 60 breadboard rows will light up with this particular build, but that's not an issue yet because no one except me has one like that. When people start having them, there will be 2 builds there.
+
 
 ---
 ##### Original description
