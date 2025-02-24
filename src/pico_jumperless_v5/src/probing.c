@@ -6,7 +6,7 @@
 #include "pico/time.h"
 
 
-#define probeRev 4 //3 is the one the beta testers have
+#define probeRev 3 //3 is the one the beta testers have
 
 
 
