@@ -8,6 +8,7 @@
 #include "pico/stdlib.h"
 #include "quadrature.pio.h"
 #include "hardware/pio.h"
+#include "hardware/gpio.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,7 +19,7 @@
 #define BUTTON_ENC 11
 
 
-PIO pioEnc = pio1;
+PIO pioEnc = pio2;
 
 uint smEnc = 0;
 uint offsetEnc = 0;
@@ -34,6 +35,7 @@ volatile bool resetPosition = false;
 int lastButtonState = 0;
 
 
+#define PICO_RP2350 1
 
 
 void initRotaryEncoder(void) {
@@ -46,8 +48,10 @@ void initRotaryEncoder(void) {
 
     gpio_pull_up(QUADRATURE_A_PIN);
     gpio_pull_up(QUADRATURE_B_PIN);
-    gpio_set_dir(QUADRATURE_A_PIN, GPIO_IN);
-    gpio_set_dir(QUADRATURE_B_PIN, GPIO_IN);
+    // gpio_set_dir(QUADRATURE_A_PIN, GPIO_IN);
+    // gpio_set_dir(QUADRATURE_B_PIN, GPIO_IN);
+    gpio_set_function(QUADRATURE_A_PIN, GPIO_FUNC_PIO2);
+    gpio_set_function(QUADRATURE_B_PIN, GPIO_FUNC_PIO2);
     gpio_init(QUADRATURE_A_PIN);
     gpio_init(QUADRATURE_B_PIN);
 
@@ -55,8 +59,12 @@ void initRotaryEncoder(void) {
     //pio_claim_free_sm_and_add_program( &quadrature_encoder_program);
     bool success = pio_claim_free_sm_and_add_program_for_gpio_range(&quadrature_encoder_program, &pioEnc, &smEnc, &offsetEnc, QUADRATURE_A_PIN, 2, true);
     // //pio_add_program(pioEnc, &quadrature_encoder_program);
-    quadrature_encoder_program_init(pioEnc, smEnc, PIN_AB, 0);
+    quadrature_encoder_program_init(pioEnc, smEnc, PIN_AB, 10);
 
+
+    lastPositionEncoder = 0;
+    encoderRaw = 0;
+    position = 0;
     hard_assert(success);
     }
 
@@ -100,14 +108,22 @@ int getEncoderPosition(void) {
     return position;
     }
 
-void setEncoderPosition(int pos) {
-    lastPositionEncoder = pos;
-    position = pos;
+void resetEncoderPosition(int pos) {
+
+
+    pio_sm_restart(pioEnc, smEnc);
+    pio_sm_clear_fifos(pioEnc, smEnc);
+
+    encoderRaw = quadrature_encoder_get_count(pioEnc, smEnc);
+
+    lastPositionEncoder = encoderRaw;
+
     }
 
 
-    int lastClick = 1;
-    unsigned long lastClickTime = 0;
+
+int lastClick = 1;
+unsigned long lastClickTime = 0;
 int getAllEncoderValues(void) {
     int held = 0;
     int click = 1;
@@ -125,23 +141,23 @@ int getAllEncoderValues(void) {
 
         }
 
-        if (click == 0 && lastClick == 1) {
-            lastClickTime = to_ms_since_boot(get_absolute_time());
-            lastClick = click;
-            }
+    if (click == 0 && lastClick == 1) {
+        lastClickTime = to_ms_since_boot(get_absolute_time());
+        lastClick = click;
+        }
 
-        if (click == 0 && lastClick == 0) {
-            if (to_ms_since_boot(get_absolute_time()) - lastClickTime > 800) {
-                held = 1;
-                lastClick = 1;
-                //return 50;
-                }
+    if (click == 0 && lastClick == 0) {
+        if (to_ms_since_boot(get_absolute_time()) - lastClickTime > 800) {
+            held = 1;
+            lastClick = 1;
+            //return 50;
             }
-            // if (click == 1 && lastClick == 0) {
-            //     released = 1;
-            //     }
+        }
+    // if (click == 1 && lastClick == 0) {
+    //     released = 1;
+    //     }
 
-           // lastClick = click;
+   // lastClick = click;
 
 
 
@@ -151,26 +167,26 @@ int getAllEncoderValues(void) {
     if (encoderDirectionState == UP) {
         encoderDirectionState = NONE;
         if (click == 0) {
-            return 51;
+            return 21;
             } else {
-            return 1;
+            return 1;//+ (numberOfSteps/16);
             }
         } else if (encoderDirectionState == DOWN) {
             encoderDirectionState = NONE;
             if (click == 0) {
-                return -51;
+                return -21;
                 } else {
-                return -1;
+                return -1;// - (numberOfSteps/16);
                 }
-        } else {
+            } else {
             if (held == 1) {
                 return 50;
                 }
 
-                // if (released == 1) {
-                if (click == 0) {
-                    return 20;
-                    }
+            // if (released == 1) {
+            if (click == 0) {
+                return 20;
+                }
 
             return 0;
             }
@@ -278,15 +294,15 @@ void rotaryEncoderStuff(void) {
     // encoderRaw = encoderRaw / rotaryDivider;
      //encoderRaw -= positionOffset;
      //   if (encoderRaw > lastPositionEncoder)
-    numberOfSteps = abs(lastPositionEncoder - encoderRaw);
+   // numberOfSteps = abs(lastPositionEncoder - encoderRaw);
 
-    if ((lastPositionEncoder - encoderRaw > 1 || lastPositionEncoder - encoderRaw < -1) || (lastPositionEncoder != encoderRaw && rotaryDivider < 8)) {
+    if ((lastPositionEncoder - encoderRaw > 1 || lastPositionEncoder - encoderRaw < -1)) {
 
         if (lastPositionEncoder > encoderRaw && encoderDirectionState != DOWN) {
             position++;
             encoderDirectionState = UP;
             //numberOfSteps = abs(lastPositionEncoder - encoderRaw);
-            numberOfSteps = abs(lastPositionEncoder - encoderRaw);
+          //  numberOfSteps = abs(lastPositionEncoder - encoderRaw);
 
             lastPositionEncoder = encoderRaw;
 
@@ -294,7 +310,8 @@ void rotaryEncoderStuff(void) {
                       encoderDirectionState != UP) {
             position--;
             encoderDirectionState = DOWN;
-            numberOfSteps = lastPositionEncoder - encoderRaw;
+           // numberOfSteps = abs(lastPositionEncoder - encoderRaw);
+
             lastPositionEncoder = encoderRaw;
 
             } else {
@@ -304,6 +321,6 @@ void rotaryEncoderStuff(void) {
             //}
 
         } else {
-        // encoderDirectionState = NONE;
+         encoderDirectionState = NONE;
         }
     }

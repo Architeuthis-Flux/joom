@@ -31,7 +31,7 @@ extern volatile encoderDirectionStates lastDirectionState;
  void initRotaryEncoder(void);
 int getEncoderRaw(void);
 int getEncoderPosition(void);
-void setEncoderPosition(int pos);
+void resetEncoderPosition(int pos);
 int getAllEncoderValues(void);
 
 void rotaryEncoderStuff(void);

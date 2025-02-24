@@ -57,7 +57,7 @@
 #include "hardware/structs/xip_ctrl.h"
 #endif
 
-#define SUPPORT_TEXT 1
+#define SUPPORT_TEXT 0
 #if SUPPORT_TEXT
 typedef struct __packed {
     const char* const name;
@@ -92,7 +92,7 @@ static uint16_t ega_colors[] = {
 // todo temproarly turned this off because it causes a seeming bug in scanvideo (perhaps only with the new callback stuff) where the last repeated scanline of a pixel line is freed while shown
 //  note it may just be that this happens anyway, but usually we are writing slower than the beam?
 //  previously PICO_ON_DEVICE but disabled to save scratch_x space
-#define USE_INTERP 1
+#define USE_INTERP 0
 #if USE_INTERP
 #include "hardware/interp.h"
 #endif

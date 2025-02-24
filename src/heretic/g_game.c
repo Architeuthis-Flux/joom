@@ -175,7 +175,7 @@ static const struct
     { wp_beak,        wp_beak },
 };
 
-#define SLOWTURNTICS    6
+#define SLOWTURNTICS    2
 
 #define NUMKEYS 256
 boolean gamekeydown[NUMKEYS];

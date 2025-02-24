@@ -187,15 +187,15 @@ static inline void put_pixel(PIO pio, uint sm, uint16_t pixel, int dim) {
 
     if (dim == 1) {
         
-            if (r + g + b < 0x05) {
-                if (r < 0x04 && b < 0x04 && g < 0x04) {
+            // if (r + g + b < 0x09) {
+            //     if (r < 0x08 && b < 0x08 && g < 0x08) {
     
     
-                    r = 0;
-                    g = 0;
-                    b = 0;
-                    }
-                }
+            //         r = 0;
+            //         g = 0;
+            //         b = 0;
+            //         }
+            //     }
             
         r = r >> 1;
         g = g >> 1;
@@ -203,9 +203,21 @@ static inline void put_pixel(PIO pio, uint sm, uint16_t pixel, int dim) {
         }
 
 
-    r = r * r;
-    g = g * g;
-    b = b * b;
+    r = r * (r-1);
+    if (r < 0x00) {
+        r = 0;
+    }
+    g= g * (g-1);
+    if (g < 0x00) {
+        g = 0;
+    }
+    b = b * (b-1);
+    if (b < 0x00) {
+        b = 0;
+    }
+
+    // g = g * g;
+    // b = b * b;
 
     // if (r < 0x03 && r > 0) {
     //     r = 0x00;

@@ -26,6 +26,7 @@ void probeInit(void) {
 
 
 int checkProbeButton(void) {
+  //return 0;
 
   int buttonState = 0;
   int buttonState2 = 0;
@@ -34,14 +35,14 @@ int checkProbeButton(void) {
 
 
 
-  sleep_us(20);
+  sleep_us(200);
  //gpio_put(PROBE_PIN, 1);
 
 
 
   gpio_set_pulls(BUTTON_PIN, false, true);
 
-   sleep_us(50);
+   sleep_us(2000);
 
   gpio_set_input_enabled(BUTTON_PIN, true);  // rp2350 errata hack: setting it to input
   buttonState = gpio_get(BUTTON_PIN);// right before reading and back fixes it
@@ -52,7 +53,7 @@ int checkProbeButton(void) {
   gpio_set_pulls(BUTTON_PIN, true, false);
 
  
-sleep_us(50);
+sleep_us(2000);
   gpio_set_input_enabled(BUTTON_PIN, true);
   buttonState2 = gpio_get(BUTTON_PIN);
   gpio_set_input_enabled(BUTTON_PIN, false);
@@ -62,7 +63,7 @@ sleep_us(50);
 
 
   gpio_set_pulls(BUTTON_PIN, false, true);
-sleep_us(20);
+sleep_us(2000);
   gpio_set_input_enabled(BUTTON_PIN, true);
   buttonState3 = gpio_get(BUTTON_PIN);
   gpio_set_input_enabled(BUTTON_PIN, false);

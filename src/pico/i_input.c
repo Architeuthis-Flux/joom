@@ -364,20 +364,7 @@ void buttons_getevent() {
 #endif
 
 #if CLICKWHEEL_SUPPORT
-// enum {
-//     BTN_L,
-//     BTN_U,
-//     BTN_R,
-//     BTN_D,
-//     BTN_1,
-//     BTN_2,
-//     BTN_COUNT
-//     };
 
-// static const uint8_t button_pins[BTN_COUNT] = {
-//     3, 4, 5, 6, 24, 27
-//     };
-// static uint8_t button_state[BTN_COUNT] = { 0 };
 
 void click_init() {
     // for (int i = 0; i < count_of(button_pins); ++i) {
@@ -414,15 +401,19 @@ void click_init() {
 
 void clickwheel_event(key_type_t key, bool pressed) {
     event_t event;
+
+    if (key == 0) {
+        return;
+        }
     if (pressed) {
         event.type = ev_keydown;
         event.data1 = key;
         event.data2 = key;
         event.data3 = key;
-        if (key == key_left || key == key_right) {
-            D_PostEvent(&event);
-            }
-       
+        // if (key == key_left || key == key_right) {
+        //     D_PostEvent(&event);
+        //     }
+
 
 
         } else {
@@ -443,78 +434,134 @@ void clickwheel_event(key_type_t key, bool pressed) {
 
 int lastCwReturn = 0;
 unsigned long lastCwTime = 0;
+
+int doItAgainTimes = -1;
+key_type_t doItAgain = 0;
 int clickwheel_getevent() {
 
+
+    // if (doItAgainTimes < 0) {
+    //     //clickwheel_event(doItAgain, false);
+    //     resetEncoderPosition(1);
+    //     doItAgainTimes = -1;
+    //     doItAgain = 0;
+    //     } else {
+    //     //return 1;
+    //     }
     int cwReturn = getAllEncoderValues();
 
+    if (doItAgain != 0 && doItAgainTimes > 0 && cwReturn == 0) {
+        clickwheel_event(doItAgain, true);
+
+        if (doItAgain == key_left) {
+            clickwheel_event(key_right, false);
+            }
+        if (doItAgain == key_right) {
+            clickwheel_event(key_left, false);
+            }
+
+            
+        doItAgainTimes--;
+        if (doItAgainTimes == 0) {
+            //clickwheel_event(doItAgain, false);
+            doItAgain = 0;
+            doItAgainTimes = -1;
+            }
+        return 1;
+
+        }
 
 
-    key_type_t event;
+
+    //return 1;
+
+
+   
+
+
+    key_type_t event = 0;
 
 
     int clickTurn = 0;
 
-if (cwReturn != 50 && cwReturn != 20) {
-    if (cwReturn < 0) {
-        if (cwReturn < -20) {
-            //numberOftimes = 0 - cwReturn+1;
-           // cwReturn += 20;
-            clickTurn = 1;
-            } else {
-            // numberOftimes = 0 - cwReturn;
-            clickTurn = 0;
-            }
-
-        } else if (cwReturn > 0) {
-            if (cwReturn > 20) {
-                //numberOftimes = cwReturn+1;
-               /// cwReturn -= 50;
+    if (cwReturn != 50 && cwReturn != 20) {
+        if (cwReturn < 0) {
+            if (cwReturn < -50) {
+                //numberOftimes = 0 - cwReturn+1;
+               // cwReturn += 20;
                 clickTurn = 1;
+                } else {
+                // numberOftimes = 0 - cwReturn;
+
+                clickTurn = 0;
                 }
-            } else {
-            //numberOftimes = cwReturn;
-            clickTurn = 0;
-            }
+
+            } else if (cwReturn > 0) {
+                if (cwReturn > 50) {
+
+                    //numberOftimes = cwReturn+1;
+                   /// cwReturn -= 50;
+
+                    clickTurn = 1;
+                    }
+                } else {
+                //numberOftimes = cwReturn;
+                clickTurn = 0;
+                }
         }
 
 
 
 
-        if (cwReturn == 20 ) {
-            event = key_fire;
+    if (cwReturn == 20) {
+        event = key_fire;
         } else if (cwReturn == 50) {
             event = key_use;
 
-            } else {
+    } else {
             if (cwReturn < 0 && clickTurn == 0) {
                 event = key_left;
+                // if (cwReturn < -1) {
+                //     doItAgain = key_left;
+                //     doItAgainTimes = 2;//abs(cwReturn) + 1;
+                //     }
                 }
             if (cwReturn > 0 && clickTurn == 0) {
+
                 event = key_right;
+                // if (cwReturn > 1) {
+                //     doItAgain = key_right;
+                //     doItAgainTimes = 2;//abs(cwReturn + 1);
+                //     }
                 }
 
             }
-            // if (cwReturn == 50) {
-            //     event = key_use;
-            //     }
+        // if (cwReturn == 50) {
+        //     event = key_use;
+        //     }
 
 
 
         if (event == key_left) {
             clickwheel_event(key_left, true);
+            doItAgain = key_left;
+            doItAgainTimes = 3;
             } else {
             clickwheel_event(key_left, false);
+
             }
 
         if (event == key_right) {
             clickwheel_event(key_right, true);
+            doItAgain = key_right;
+            doItAgainTimes = 3 ;
             } else {
             clickwheel_event(key_right, false);
             }
 
         if (event == key_fire) {
             clickwheel_event(key_fire, true);
-            
+
             } else {
             clickwheel_event(key_fire, false);
             }
@@ -531,11 +578,11 @@ if (cwReturn != 50 && cwReturn != 20) {
 
 
 
-if (cwReturn != 0) {
-   return 1;
- } else {
-     return 0;
-        }
+        if (cwReturn != 0) {
+            return 1;
+            } else {
+            return 0;
+            }
 
     }
 #endif
@@ -544,7 +591,7 @@ if (cwReturn != 0) {
 #if PROBE_SUPPORT
 
 void probe_event(key_type_t key, bool pressed) {
-    event_t event;
+    event_t event = { 0 };
     if (pressed) {
         event.type = ev_keydown;
         event.data1 = key;
@@ -603,7 +650,7 @@ void probe_getevent() {
 
 
     if (probeState == 1 || probeState == 2) {
-        key_type_t pevent;
+        key_type_t pevent = 0;
 
         switch (probeState) {
             case 1:
@@ -1171,16 +1218,23 @@ void I_GetEventTimeout(int key_timeout) {
     buttons_getevent();
 #endif
 
-#if CLICKWHEEL_SUPPORT
-   if ( clickwheel_getevent() == 1) {
-       return;
-       }
-#endif
 
 #if PROBE_SUPPORT
     probe_getevent();
 #endif
 
+#if CLICKWHEEL_SUPPORT
+   if (clickwheel_getevent() == 1) {
+      
+       } else {
+       
+#endif
+
+
+
+#if CLICKWHEEL_SUPPORT
+       }
+#endif
 
 #if PICO_ON_DEVICE && !NO_USE_UART && false
     if (uart_is_readable(uart_default)) {

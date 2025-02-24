@@ -34,8 +34,8 @@ void init_clickwheel(void);
 int check_clickwheel(void);
 void init_probe(void);
 void check_probe_button(void);
-void init_sound(void);
-void play_jumperless_sound(int sound);
+// void init_sound(void);
+// void play_jumperless_sound(int sound);
 void jumperless_clearScreen(void);
 
 

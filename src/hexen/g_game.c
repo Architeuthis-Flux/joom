@@ -244,7 +244,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     else
         turnheld = 0;
     if (turnheld < SLOWTURNTICS)
-        tspeed = 2;             // slow turn
+        tspeed = 6;             // slow turn
     else
         tspeed = speed;
 

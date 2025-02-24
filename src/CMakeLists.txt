@@ -350,7 +350,7 @@ target_compile_definitions(small_doom_common INTERFACE
         USE_LIGHTMAP_INDEXES=1 # saves about 9K
 
         #FRACBITS=15 # ha ha doesn't seem to be passed thru everywhere!
-        NO_USE_ENDDOOM=1
+         NO_USE_ENDDOOM=1
         #NO_DRAW_VISPLANES=1
 
         USE_ERASE_FRAME=1 #
@@ -581,11 +581,11 @@ function(add_doom_tiny SUFFIX SCREEN)
     target_compile_definitions(doom_tiny${SUFFIX} PRIVATE
         #FORCE_NODRAW=1
         USE_MEMORY_WAD=1
-        # PICO_DEBUG_MALLOC=1
+         PICO_DEBUG_MALLOC=1
          EMU8950_NO_RATECONV=1
     #  TUSB_OPT_DEVICE_ENABLED=1
         # PICO_BUILD=1
-        PICO_CORE1_STACK_SIZE=0x498 # was 0x4f8
+        PICO_CORE1_STACK_SIZE=0x4f8 # was 0x4f8
 
         NO_IERROR=1
     )
@@ -702,7 +702,7 @@ endfunction()
 
 add_doom_tiny_screen("jumperless_v5")
 target_compile_definitions(doom_tiny_usb_jumperless_v5 PRIVATE
-    DOWNSAMPLING_FACTOR_OUT_OF_100=1000
+    DOWNSAMPLING_FACTOR_OUT_OF_100=500
 )
 
 add_doom_tiny_screen("SSD1306_70_40")

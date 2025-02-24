@@ -23,8 +23,8 @@ target_sources(common_pico INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/ssd1306_70_40_i2c.c
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/st7735_128_128.c
         ${CMAKE_CURRENT_LIST_DIR}/pico-screens/screens/jumperless_v5.c
-        ${CMAKE_CURRENT_LIST_DIR}/usb_descriptors.c
- ${CMAKE_CURRENT_LIST_DIR}/stdio_usb.c
+        # ${CMAKE_CURRENT_LIST_DIR}/usb_descriptors.c
+#  ${CMAKE_CURRENT_LIST_DIR}/stdio_usb.c
 )
 if (PICO_ON_DEVICE)
     target_sources(common_pico INTERFACE
@@ -48,15 +48,16 @@ target_include_directories(common_pico INTERFACE
         )
 
 target_compile_definitions(common_pico INTERFACE
- TUSB_OPT_DEVICE_ENABLED=1
+#  TUSB_OPT_DEVICE_ENABLED=1
 # PICO_RP2040_USB_DEVICE_ENUMERATION_FIX=1
 # PICO_RP2040_USB_DEVICE_UFRAME_FIX=1
  PICO_RP2350=1
- CFG_TUSB_CONFIG_FILE="tusb_config2.h"
+#  CFG_TUSB_CONFIG_FILE="tusb_config2.h"
   DOOM_TINY=1
 # PICO_STDIO_USB_LOW_PRIORITY_IRQ=1
-
+NO_USE_UART=1
 #   CFG_TUD_CDC=3
+USE_INTERP=1
         NO_USE_MOUSE=1
         PICO_AUDIO_I2S_PIO=1
         PICO_AUDIO_I2S_DMA_IRQ=1
@@ -64,7 +65,7 @@ target_compile_definitions(common_pico INTERFACE
         PICO_USE_STACK_GUARDS=0 # todo we can actually use these sensibly, but right now we do overflow!
 )
 
-target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi tinyusb_device )
+target_link_libraries(common_pico INTERFACE pico_stdlib pico_multicore pico_scanvideo_dpi  )
 
 add_library(pico_cd INTERFACE)
 

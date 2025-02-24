@@ -2991,7 +2991,7 @@ void pd_core1_loop() {
     sem_acquire_blocking(&core1_wake);
 #if USE_CORE1_FOR_FLATS
 
-    while (!sem_acquire_timeout_ms(&core1_do_flats, 1)) {
+    while (!sem_acquire_timeout_ms(&core1_do_flats, 300)) {
         SafeUpdateSound();
     }
     interp_in_use = true;
@@ -2999,13 +2999,13 @@ void pd_core1_loop() {
     interp_in_use = false;
 #if USE_CORE1_FOR_REGULAR
 //while(1);
-    while (!sem_acquire_timeout_ms(&core1_do_regular, 1)) {
+    while (!sem_acquire_timeout_us(&core1_do_regular, 300)) {
         SafeUpdateSound();
     }
     draw_regular_columns(1);
 #endif
 #endif
-    while (!sem_acquire_timeout_ms(&core0_done, 1)) {
+    while (!sem_acquire_timeout_us(&core0_done, 300)) {
         SafeUpdateSound();
     }
 #endif
