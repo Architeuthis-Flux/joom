@@ -1,27 +1,42 @@
-# RP2040 Doom, now for I2C and SPI displays!
+# RP2350 Doom, for the [Jumperless V5](https://www.crowdsupply.com/architeuthis-flux/jumperless-v5)
 
-![](https://i.imgur.com/QxaZdQg.jpeg)
 
-[youtube short here](https://www.youtube.com/shorts/YlykSvr83Jc)
 
-This is a fork of Graham Sanderson's Doom port for the RP2040. It adds support for certain SPI and I2c displays; it's also _very much_ not finished, but it does work. 
+https://github.com/user-attachments/assets/2010a8c9-6dff-44e7-a07a-01d87fca635a
 
-Graham's original port used a DVI signal, which was very ambitious and all the more impressive that he pulled it off. He had many optimizations to make his code as fast as possible and used a scanline buffer array in order to make the tight timings DVI signal requires.
+Okay, it's approaching "good enough" for me to move on with my life. Some tips:
 
-I ripped out almost all of those optimizations (except for the VPatch stuff), slapped on a line buffer and some downsampling code, and then made an interface to blit that buffer to different displays. It uh... it was a lot of work, it just doesn't sound like it.
+First the controls:
+```
+probe front button     = walk forward
+probe back button      = walk backwards
+clickwheel turn        = turn right/left
+clickwheel click short = shoot  (also this is what you should press first on the splash screen to start the game, any other button will put you in a menu and there's no way to read where you are, just unplug it and try again)
+clickwheel click long  = "use" button for opening doors and stuff (yes you will shoot too)
+```
 
-You build just as you would for the original Doom port; I've modified the CMake targets to spit out binaries for each display.
+For sound, plug a random speaker into RST 0 on the Nano header (the top one), through a 0-100 ohm resistor , and into a GND rail. 
 
-A non-exhaustive list of the hardware that has run this port:
+Optionally, you can put a capacitor to GND where the resistor meets the speaker as a low pass filter. idk, do whatever sounds best.
+```
+   RST_0 -/\/\---*)))---GND
+               |  
+               =   } (optional)
+               |  
+              GND
+```
+It's outputting I2S audio data, which coincidentally can just be fed into a speaker and sound basically fine.
 
-* a Raspberry Pi Pico
-* My custom PCB with one of [these](https://www.aliexpress.us/item/3256803794221438.html?spm=a2g0o.order_list.order_list_main.4.651c1802EaKSD2&gatewayAdapt=glo2usa), either the 0.96 or the 1.14 inch displays
-* [this little guy](https://www.aliexpress.us/item/3256804711797928.html?spm=a2g0o.order_list.order_list_main.107.651c1802EaKSD2&gatewayAdapt=glo2usa)
-* A [Lilygo TTGo T-Display](https://www.aliexpress.us/item/3256803094729227.html?spm=a2g0o.order_list.order_list_main.127.651c1802EaKSD2&gatewayAdapt=glo2usa)
 
-The mipi display library should allow for the addition of many more displays with minimal effort, but I can't give support for adding new displays right now, so you're on your own! If you do want to add a display I encourage you to look at the commit diffs and the pull request to get better context on what changed and why.
+When you're done, you'll need to load the [normal firmware](https://github.com/Architeuthis-Flux/JumperlessV5/releases/latest) again. I haven't written a way to run it as an app in the normal firmware, which is probably for the best.
 
-# Original description
+
+
+It's easier to see what's going on in person, but still serves as an excellent blindness simulator. 0/10, would not recommend being blind, especially with a bunch of demons trying to kill you. It helps a lot to play the game in an online [emulator](https://www.retrogames.cz/play_414-DOS.php) first to give you a sense of wtf you're looking at. 
+
+
+---
+##### Original description
 
 # RP2040 Doom
 
