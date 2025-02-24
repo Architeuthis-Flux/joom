@@ -61,6 +61,8 @@ TODO (but probably won't, I've spent waaay too much time on this already):
 ##### This was built for a Jumperless V5 rev 3, and a rev 3 probe (which is what you beta testers have). The rev 4 probes will work fine too but the buttons are swapped. For the real production rev 6s, the LEDs are split into 2 separate strings for faster refresh rates (60 breadboard rows on one, and rails + Nano header + logo on the other), so only the 60 breadboard rows will light up with this particular build, but that's not an issue yet because no one except me has one like that. When people start having them, there will be 2 builds there.
 
 
+btw this code is a mess, I'll clean it up if anyone cares. 
+
 ---
 ##### Original description
 
